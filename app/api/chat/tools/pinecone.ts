@@ -1,5 +1,5 @@
 // /lib/pinecone.ts
-import { pinecone, openai } from "./clients";
+import { pinecone, openai } from "./client";
 
 export async function upsertTextToPinecone({
   id,
