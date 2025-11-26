@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Imaginary Prescription Form</title>
+    <style>
+        /* Basic CSS for a professional look */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f9;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: #fff;
+            padding: 30px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #333;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+        .hospital-info {
+            text-align: left;
+        }
+        .hospital-info h1 {
+            color: #1f456e; /* Dark blue/medical color */
+            margin: 0 0 5px 0;
+            font-size: 1.8em;
+        }
+        .hospital-info p {
+            margin: 0;
+            font-size: 0.9em;
+            color: #555;
+        }
+        .logo-img {
+            max-width: 80px;
+            height: auto;
+        }
+        .patient-details, .medication-section {
+            margin-bottom: 25px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .patient-details label {
+            display: block;
+            margin: 10px 0 5px 0;
+            font-weight: bold;
+            color: #333;
+        }
+        .patient-details input[type="text"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .flex-row {
+            display: flex;
+            gap: 20px;
+        }
+        .flex-row > div {
+            flex: 1;
+        }
+        .medication-section textarea {
+            width: 100%;
+            min-height: 150px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            resize: vertical;
+        }
+        .signature-area {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 30px;
+            align-items: flex-end;
+        }
+        .signature-box {
+            text-align: center;
+            border-top: 1px dashed #333;
+            padding-top: 5px;
+            width: 250px;
+        }
+        .signature-img {
+            max-width: 150px;
+            height: auto;
+            margin-bottom: 5px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <div class="header">
+        <div class="hospital-info">
+            <h1>St. Jude's General Hospital</h1>
+            <p>123 Health Blvd, Fictional City, State 10001</p>
+            <p>Tel: (555) 123-4567 | Reg. No: XYZ-7890</p>
+        </div>
+        <div>
+            <img src="https://via.placeholder.com/80x80?text=LOGO" alt="Hospital Logo" class="logo-img">
+        </div>
+    </div>
+
+    <div class="patient-details">
+        <h3>Patient Information</h3>
+        <div class="flex-row">
+            <div>
+                <label for="patient-name">Patient Name:</label>
+                <input type="text" id="patient-name" name="patient-name">
+            </div>
+            <div>
+                <label for="patient-age">Age/DOB:</label>
+                <input type="text" id="patient-age" name="patient-age">
+            </div>
+        </div>
+        <label for="diagnosis">Diagnosis/Chief Complaint:</label>
+        <input type="text" id="diagnosis" name="diagnosis">
+        <label for="date">Date:</label>
+        <input type="text" id="date" name="date" value="(e.g., Nov 26, 2025)">
+    </div>
+
+    <div class="medication-section">
+        <h3>Prescription (Rx)</h3>
+        <label for="medicines">**Instructions/Medicine and Doses (Fill Below):**</label>
+        <textarea id="medicines" name="medicines" placeholder="e.g., 1. Amoxicillin 500mg - Take 1 tablet three times a day for 7 days.
+2. Paracetamol 500mg - Take 1 tablet as needed for fever/pain (Max 4/day).
+3. Follow up in 1 week."></textarea>
+    </div>
+
+    <div class="signature-area">
+        <div class="signature-box">
+            <img src="https://via.placeholder.com/150x50?text=Dr+Signature" alt="Digital Signature of Dr. Elara Vance" class="signature-img">
+            **Dr. Elara Vance, M.D.** <br>
+            *General Practitioner (Lic. 98765)*
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
