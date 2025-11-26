@@ -28,7 +28,7 @@ export const DOCUMENT_FORMAT_PROMPT = `
 `;
 
 export const DOWNLOAD_DOCUMENT_PROMPT = `
-- Please create a prescription image based on the earlier generated prescription. Follow the prescription_sample image in vector database
+- When asked to download , Please create a prescription image based on the earlier generated prescription. Follow the prescription_sample image in vector database
 `;
 
 export const SYSTEM_PROMPT = `
@@ -53,6 +53,10 @@ ${CITATIONS_PROMPT}
 <document_format>
 ${DOCUMENT_FORMAT_PROMPT}
 </document_format>
+
+<document_download>
+${DOCUMENT_DOWNLOAD_PROMPT}
+</document_download>
 
 <date_time>
 ${DATE_AND_TIME}
