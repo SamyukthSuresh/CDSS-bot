@@ -70,7 +70,7 @@ export async function POST(req: Request) {
             vectorDatabaseSearch,
             imageGeneration
         },
-        stopWhen: stepCountIs(50),
+        stopWhen: stepCountIs(10),
         providerOptions: {
             openai: {
                 reasoningSummary: 'auto',
