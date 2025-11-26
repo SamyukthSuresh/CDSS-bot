@@ -1,9 +1,6 @@
 import twilio from 'twilio';
 
-const client = twilio(
-  process.env.TWILIO_ACCOUNT_SID,
-  process.env.TWILIO_AUTH_TOKEN
-);
+import { TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_PHONE_NUMBER} from '@/config';
 
 export async function sendSMS(to: string, message: string) {
   try {
