@@ -5,7 +5,7 @@ export async function sendSMS(to: string, message: string) {
   const from = TWILIO_PHONE_NUMBER;
 
   // Validate environment variables
-  if (!accountSid || !authToken || !from) {
+   if (!accountSid || !authToken || !from) {
     throw new Error('Missing Twilio credentials in environment variables');
   }
 
@@ -23,7 +23,7 @@ export async function sendSMS(to: string, message: string) {
         },
         body: new URLSearchParams({
           To: to,
-          From: from,
+          From: String(from),
           Body: message,
         }).toString(),
       }
