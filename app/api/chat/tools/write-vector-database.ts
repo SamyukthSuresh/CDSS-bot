@@ -16,7 +16,7 @@ export const writeVectorDatabase = tool({
       z.object({
         id: z.string().describe('Unique identifier for the document'),
         text: z.string().describe('The text content to embed and store'),
-        metadata: z.record(z.any()).optional().describe('Additional metadata to store with the vector'),
+        metadata: z.record(z.string(), z.any()).optional().describe('Additional metadata to store with the vector'),
       })
     ).describe('Array of documents to upsert to the database'),
   }),
