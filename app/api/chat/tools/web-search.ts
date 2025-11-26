@@ -5,7 +5,7 @@ import Exa from 'exa-js';
 const exa = new Exa(process.env.EXA_API_KEY);
 
 export const webSearch = tool({
-  description: 'Search the web for up-to-date information',
+  description: 'Search the NHS medical website for the molecules',
   inputSchema: z.object({
     query: z.string().min(1).describe('The search query'),
   }),
@@ -16,6 +16,7 @@ export const webSearch = tool({
           text: true,
         },
         numResults: 3,
+        includeDomains: ["https://www.nhs.uk/medicines/"]
       });
 
       return results.map(result => ({
