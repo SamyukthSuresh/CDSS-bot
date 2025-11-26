@@ -28,7 +28,7 @@ export const DOCUMENT_FORMAT_PROMPT = `
 `;
 
 export const DOWNLOAD_DOCUMENT_PROMPT = `
-- When asked to download , Please create a prescription image based on the earlier generated prescription. Follow the prescription_sample image in vector database
+- When asked to download , Please create a prescription image using image generation tool based on the earlier generated prescription. Follow the prescription_sample image in vector database
 `;
 
 export const SYSTEM_PROMPT = `
