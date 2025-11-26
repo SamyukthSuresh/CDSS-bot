@@ -13,7 +13,7 @@ export const imageGeneration = tool({
     size: z.enum(['1024x1024', '1792x1024', '1024x1792']).optional().describe('The size of the generated image'),
     quality: z.enum(['standard', 'hd']).optional().describe('The quality of the image'),
   }),
-  execute: async (args) => { // Change to single args parameter
+  execute: async (args:any) => { // Change to single args parameter
     const { prompt, size, quality } = args; // Destructure inside the function
     
     try {
