@@ -22,7 +22,7 @@ export const imageGeneration = tool({
     try {
       // Call the OpenAI Images API (openai@6.x)
       const response = await openai.images.generate({
-        model: "gpt-image-1", // correct model id for image generation
+        model: "gpt-4.1", // correct model id for image generation
         prompt,
         n: 1,
         size: (size as "1024x1024" | "1792x1024" | "1024x1792") ?? "1024x1024",
