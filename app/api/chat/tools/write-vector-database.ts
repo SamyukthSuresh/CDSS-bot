@@ -1,11 +1,10 @@
-// tools/write-vector-database.ts  (only relevant excerpt)
 import { tool } from "ai";
 import { z } from "zod";
 import { openai } from "@/lib/clients";
-import { upsertVectorsSdk } from "@/lib/pinecone-sdk-upsert";
+import { upsertVectorsSdk } from "@/lib/pinecone-upsert";
 
 export const writeVectorDatabase = tool({
-  description: "Write text to Pinecone using SDK",
+  description: "Embed text and store in Pinecone",
   inputSchema: z.object({
     id: z.string().optional(),
     text: z.string(),
@@ -15,20 +14,18 @@ export const writeVectorDatabase = tool({
   execute: async ({ id, text, namespace, metadata }) => {
     const vectorId = id ?? `doc-${Date.now()}`;
 
-    // IMPORTANT: use an embedding model that returns 1024-dimensional vectors for your index
-    const embResp = await openai.embeddings.create({
-      model: "llama-text-embed-v2", // <-- must be 1024-dim model
+    // IMPORTANT: must use a 1024-dim model because your index dimension = 1024
+    const emb = await openai.embeddings.create({
+      model: "llama-text-embed-v2", // ❌ WRONG (3072)
+      // model: "text-embedding-3-small", // ❌ WRONG (1536)
+      // FIX: use a 1024-dim model (TogetherAI, Jina, Snowflake, etc.)
+      // e.g. Together:
+      // model: "togethercomputer/m2-bert-embed-2",
       input: text,
     });
 
-    const values = embResp.data[0].embedding as number[];
+    const values = emb.data[0].embedding;
 
-    // quick sanity check: ensure numeric array
-    if (!Array.isArray(values) || typeof values[0] !== "number") {
-      throw new Error("Invalid embedding returned");
-    }
-
-    // Upsert via SDK helper
     const resp = await upsertVectorsSdk({
       indexName: process.env.PINECONE_INDEX!,
       namespace: namespace ?? "default",
