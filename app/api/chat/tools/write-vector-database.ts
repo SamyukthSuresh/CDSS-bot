@@ -16,14 +16,11 @@ export const writeVectorDatabase = tool({
     const vectorId = id ?? `doc-${Date.now()}`;
 
     // IMPORTANT: must use a 1024-dim model because your index dimension = 1024
-    const emb = await openai.embeddings.create({
-      model: "llama-text-embed-v2", // ❌ WRONG (3072)
-      // model: "text-embedding-3-small", // ❌ WRONG (1536)
-      // FIX: use a 1024-dim model (TogetherAI, Jina, Snowflake, etc.)
-      // e.g. Together:
-      // model: "togethercomputer/m2-bert-embed-2",
-      input: text,
-    });
+     const emb = await pinecone.inference.embed(
+      'multilingual-e5-large', // Use a valid model instead of llama-text-embed-v2
+      documents.map(doc => doc.text),
+      { inputType: 'passage' }
+    );
 
     const values = emb.data[0].embedding;
 
