@@ -7,42 +7,31 @@ const openai = new OpenAI({
 });
 
 export const imageGeneration = tool({
-  description: 'Generate images based on text descriptions. Use this when the user asks you to create, generate, or draw an image.',
+  description:
+    'Generate images based on text descriptions. Use this when the user asks you to create, generate, or draw an image.',
   parameters: z.object({
-    prompt: z.string().describe('A detailed description of the image to generate'),
+    prompt: z.string().min(1).describe('A detailed description of the image to generate'),
     size: z.enum(['1024x1024', '1792x1024', '1024x1792']).optional().describe('The size of the generated image'),
-    quality: z.enum(['standard', 'hd']).optional().describe('The quality of the image'),
+    // removed `quality` because it's not a standard images parameter
   }),
-  execute: async ({ prompt, size, quality }) => {
-    try {
-      const response = await openai.images.generate({
-        model: 'dall-e-3',
-        prompt,
-        n: 1,
-        size: (size || '1024x1024') as '1024x1024' | '1792x1024' | '1024x1792',
-        quality: (quality || 'standard') as 'standard' | 'hd',
-      });
-
-      const imageUrl = response.data[0]?.url;
-      
-      if (!imageUrl) {
-        return {
-          success: false,
-          error: 'Failed to generate image',
-        };
-      }
-
-      return {
-        success: true,
-        imageUrl: imageUrl,
-        revisedPrompt: response.data[0]?.revised_prompt,
-      };
-    } catch (error) {
-      console.error('Image generation error:', error);
+  execute: async ({ prompt, size }) => {
+    if (!process.env.OPENAI_API_KEY) {
       return {
         success: false,
-        error: error instanceof Error ? error.message : 'Unknown error occurred',
+        error: 'OPENAI_API_KEY is not set in environment',
       };
     }
-  },
-});
+
+    try {
+      // NOTE: use the correct model name for image generation
+      const response = await openai.images.generate({
+        model: 'gpt-image-1',
+        prompt,
+        n: 1,
+        size: size || '1024x1024',
+      });
+
+      // Log the raw response for debugging (remove or lower verbosity in prod)
+      console.log('OpenAI images.generate response:', JSON.stringify(response, null, 2));
+
+      const entry = response.data?.[0];
