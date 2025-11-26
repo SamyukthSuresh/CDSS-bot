@@ -68,6 +68,7 @@ export async function POST(req: Request) {
             webSearch,
             vectorDatabaseSearch,
         },
+        stopWhen: stepCountIs(50),
         providerOptions: {
             openai: {
                 reasoningSummary: 'auto',
