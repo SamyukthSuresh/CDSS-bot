@@ -1,4 +1,4 @@
-/ /lib/pinecone-sdk-upsert.ts
+// lib/pinecone-sdk-upsert.ts
 import { pinecone, openai } from "./clients";
 import { PINECONE_INDEX_NAME } from '@/config';
 
