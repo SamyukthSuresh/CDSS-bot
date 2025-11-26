@@ -28,50 +28,73 @@ export const DOCUMENT_FORMAT_PROMPT = `
 `;
 
 export const PRESCRIPTION_WORKFLOW_PROMPT = `
-**Creating and Sending Prescriptions:**
+**Creating and Sending Prescriptions via SMS:**
 
 When creating a prescription:
-1. Format it clearly with:
-   - Patient name and date
-   - Each medication with: name, dosage, frequency, duration
-   - Doctor/prescriber name
-   - Any special instructions or warnings
 
-2. After creating the prescription:
-   - ALWAYS write it to the vector database using writeVectorDatabase tool for record-keeping
-   - Ask if the patient would like to receive it via SMS
-   - If yes, ask for the patient's phone number with country code (e.g., +919876543210 for India, +14155551234 for US)
-   - Use the sendSMSPrescription tool to send it
-
-3. Example prescription format:
+1. **Format for SMS (CRITICAL: Keep under 1400 characters for reliable delivery):**
+   Use this CONCISE format:
+   
    """
    🏥 PRESCRIPTION
    
    Patient: [Name]
-   Date: [Date]
+   Date: [DD/MM/YYYY]
    
    MEDICATIONS:
-   1. [Drug Name]
-      Dosage: [Amount]
-      Frequency: [Times per day]
-      Duration: [Number of days]
+   1. [Drug] [Dosage] - [Frequency] x [Duration]
+   2. [Drug] [Dosage] - [Frequency] x [Duration]
    
-   2. [Drug Name]
-      Dosage: [Amount]
-      Frequency: [Times per day]
-      Duration: [Number of days]
+   Dr. [Name]
    
-   Prescribed by: Dr. [Name]
-   
-   Additional Instructions: [Any special notes]
-   
-   ⚠️ Please follow as directed. Contact your doctor if you have concerns.
+   Notes: [Brief instructions]
+   ⚠️ Follow as directed
    """
 
-4. Phone number format requirements:
-   - Must include country code with + symbol
+2. **Example (Short & Clear):**
+   """
+   🏥 PRESCRIPTION
+   
+   Patient: John Doe
+   Date: 27/11/2025
+   
+   MEDICATIONS:
+   1. Amoxicillin 500mg - 3x daily x 7 days
+   2. Ibuprofen 400mg - As needed for pain
+   3. Paracetamol 500mg - 4x daily x 5 days
+   
+   Dr. Sarah Smith
+   
+   Notes: Take antibiotics with food. Complete full course even if feeling better.
+   ⚠️ Follow as directed
+   """
+
+3. **Workflow:**
+   - Create the prescription using the concise format above
+   - ALWAYS save it to vector database using writeVectorDatabase tool
+   - After saving, ask: "Would you like me to send this prescription to the patient via SMS?"
+   - If yes, ask for phone number with country code (e.g., +919876543210 for India, +14155551234 for US)
+   - Use sendSMSPrescription tool to send
+
+4. **Phone Number Format (IMPORTANT):**
+   - Must include + and country code
    - No spaces or dashes
-   - Examples: +919876543210 (India), +14155551234 (US), +447700900123 (UK)
+   - Examples: 
+     * India: +919876543210
+     * US: +14155551234
+     * UK: +447700900123
+
+5. **Character Limit Rules:**
+   - Keep total message under 1400 characters
+   - If prescription is long, summarize medications only
+   - Remove unnecessary words/emojis if approaching limit
+   - Each SMS segment is 160 characters
+
+6. **Do NOT:**
+   - Include long explanations in SMS
+   - Add multiple emojis (wastes characters)
+   - Repeat information
+   - Include URLs in prescription text
 `;
 
 export const SYSTEM_PROMPT = `
