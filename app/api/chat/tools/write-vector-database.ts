@@ -2,6 +2,7 @@ import { tool } from "ai";
 import { z } from "zod";
 import { openai } from "@/lib/clients";
 import { upsertVectorsSdk } from "@/lib/pinecone-upsert";
+import { PINECONE_INDEX_NAME } from '@/config';
 
 export const writeVectorDatabase = tool({
   description: "Embed text and store in Pinecone",
@@ -27,7 +28,7 @@ export const writeVectorDatabase = tool({
     const values = emb.data[0].embedding;
 
     const resp = await upsertVectorsSdk({
-      indexName: process.env.PINECONE_INDEX!,
+      indexName: PINECONE_INDEX_NAME,
       namespace: namespace ?? "default",
       vectors: [
         {
