@@ -1,6 +1,6 @@
 import { tool } from "ai";
 import { z } from "zod";
-import { upsertTextToPinecone } from "@/lib/pinecone";
+import { upsertTextToPinecone } from "@/tools/pinecone";
 
 export const writeVectorDatabase = tool({
   description: "Write a text and its OpenAI embedding into Pinecone",
