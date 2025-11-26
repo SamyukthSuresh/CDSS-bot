@@ -10,18 +10,21 @@ export const imageGeneration = tool({
   description: 'Generate images based on text descriptions. Use this when the user asks you to create, generate, or draw an image.',
   parameters: z.object({
     prompt: z.string().describe('A detailed description of the image to generate'),
-    size: z.enum(['1024x1024', '1792x1024', '1024x1792']).default('1024x1024').describe('The size of the generated image'),
-    quality: z.enum(['standard', 'hd']).default('standard').describe('The quality of the image'),
+    size: z.enum(['1024x1024', '1792x1024', '1024x1792']).optional().describe('The size of the generated image'),
+    quality: z.enum(['standard', 'hd']).optional().describe('The quality of the image'),
   }),
-  execute: async ({ prompt, size, quality }) => {
+  execute: async ({ prompt, size = '1024x1024', quality = 'standard' }) => {
     try {
-      const response = await openai.images.generate({
-        model: 'dall-e-3', // GPT-4.1 uses DALL-E 3 for image generation
+      // Explicitly type the parameters
+      const params: OpenAI.Images.ImageGenerateParams = {
+        model: 'dall-e-3',
         prompt: prompt,
         n: 1,
         size: size,
         quality: quality,
-      });
+      };
+
+      const response = await openai.images.generate(params);
 
       const imageUrl = response.data[0]?.url;
       
