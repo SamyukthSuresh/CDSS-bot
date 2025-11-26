@@ -59,6 +59,7 @@ export async function POST(req: Request) {
         }
     }
 
+    export const runtime = "nodejs";
     const result = streamText({
         model: MODEL,
         system: SYSTEM_PROMPT,
@@ -67,12 +68,13 @@ export async function POST(req: Request) {
             webSearch,
             vectorDatabaseSearch,
         },
-        stopWhen: stepCountIs(10),
+        stopWhen: stepCountIs(50),
         providerOptions: {
             openai: {
                 reasoningSummary: 'auto',
-                reasoningEffort: 'low',
+                reasoningEffort: 'high',
                 parallelToolCalls: false,
+                max_output_tokens: 5000, 
             }
         }
     });
