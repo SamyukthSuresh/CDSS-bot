@@ -1,16 +1,11 @@
-// tools/write-vector-database.ts
+// tools/write-vector-database.ts  (only relevant excerpt)
 import { tool } from "ai";
 import { z } from "zod";
-import { upsertVectorsRest } from "@/lib/pinecone-rest";
-import OpenAI from "openai";
-import { PINECONE_HOST, PINECONE_API_KEY } from '@/config';
-
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY!,
-});
+import { openai } from "@/lib/clients";
+import { upsertVectorsSdk } from "@/lib/pinecone-sdk-upsert";
 
 export const writeVectorDatabase = tool({
-  description: "Embed text and store it in Pinecone using REST API",
+  description: "Write text to Pinecone using SDK",
   inputSchema: z.object({
     id: z.string().optional(),
     text: z.string(),
@@ -20,30 +15,32 @@ export const writeVectorDatabase = tool({
   execute: async ({ id, text, namespace, metadata }) => {
     const vectorId = id ?? `doc-${Date.now()}`;
 
-    // Create embedding using OpenAI
-    const emb = await openai.embeddings.create({
-      model: "togethercomputer/m2-bert-embed-2", // <-- If your index uses 1536 dims
+    // IMPORTANT: use an embedding model that returns 1024-dimensional vectors for your index
+    const embResp = await openai.embeddings.create({
+      model: "llama-text-embed-v2", // <-- must be 1024-dim model
       input: text,
     });
 
-    const vector = {
-      id: vectorId,
-      values: emb.data[0].embedding,
-      metadata: metadata ?? {},
-    };
+    const values = embResp.data[0].embedding as number[];
 
-    // Call REST upsert
-    const resp = await upsertVectorsRest({
-      host: PINECONE_HOST,  // Must be set in .env
-      apiKey: PINECONE_API_KEY,
+    // quick sanity check: ensure numeric array
+    if (!Array.isArray(values) || typeof values[0] !== "number") {
+      throw new Error("Invalid embedding returned");
+    }
+
+    // Upsert via SDK helper
+    const resp = await upsertVectorsSdk({
+      indexName: process.env.PINECONE_INDEX!,
       namespace: namespace ?? "default",
-      vectors: [vector],
+      vectors: [
+        {
+          id: vectorId,
+          values,
+          metadata: metadata ?? {},
+        },
+      ],
     });
 
-    return {
-      success: true,
-      id: vectorId,
-      pineconeResponse: resp,
-    };
+    return { success: true, id: vectorId, pineconeResponse: resp };
   },
 });
