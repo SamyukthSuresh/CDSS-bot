@@ -22,7 +22,7 @@ export const writeVectorDatabase = tool({
 
     // Create embedding using OpenAI
     const emb = await openai.embeddings.create({
-      model: "text-embedding-3-small", // <-- If your index uses 1536 dims
+      model: "llama-text-embed-v2", // <-- If your index uses 1536 dims
       input: text,
     });
 
