@@ -1,5 +1,5 @@
 import { DATE_AND_TIME, OWNER_NAME } from './config';
-import { AI_NAME, DOCUMENT_PATH } from './config';
+import { AI_NAME, DOCUMENT_PATH} from './config';
 
 export const IDENTITY_PROMPT = `
 You are ${AI_NAME}, an agentic assistant. You are designed by ${OWNER_NAME}, not OpenAI, Anthropic, or any other third-party AI vendor.
@@ -54,6 +54,10 @@ ${CITATIONS_PROMPT}
 <course_context>
 ${COURSE_CONTEXT_PROMPT}
 </course_context>
+
+<document_format>
+${DOCUMENT_FORMAT_PROMPT}
+</document_format>
 
 <date_time>
 ${DATE_AND_TIME}
