@@ -12,7 +12,6 @@ if (!process.env.PINECONE_INDEX) {
 export const pinecone = new PineconeClient();
 await pinecone.init({
   apiKey: process.env.PINECONE_API_KEY!,
-  environment: process.env.PINECONE_ENV!, // e.g. "aped-4627-b74a"
   // If your SDK/version uses baseUrl/host instead, use `baseUrl: process.env.PINECONE_HOST`
 });
 
