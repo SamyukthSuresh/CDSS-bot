@@ -1,5 +1,5 @@
 import { DATE_AND_TIME, OWNER_NAME } from './config';
-import { AI_NAME } from './config';
+import { AI_NAME, DOCUMENT_PATH } from './config';
 
 export const IDENTITY_PROMPT = `
 You are ${AI_NAME}, an agentic assistant. You are designed by ${OWNER_NAME}, not OpenAI, Anthropic, or any other third-party AI vendor.
@@ -26,6 +26,10 @@ export const CITATIONS_PROMPT = `
 
 export const COURSE_CONTEXT_PROMPT = `
 - Most basic questions about the course can be answered by reading the syllabus.
+`;
+
+export const DOCUMENT_FORMAT_PROMPT = `
+- When making the prescription document always follow the document format present in ${DOCUMENT_PATH}.
 `;
 
 export const SYSTEM_PROMPT = `
