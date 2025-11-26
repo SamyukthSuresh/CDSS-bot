@@ -5,7 +5,7 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-export async function upsertTextsSdk({
+export async function writeVectorDatabase({
   indexName,
   namespace,
   texts,
