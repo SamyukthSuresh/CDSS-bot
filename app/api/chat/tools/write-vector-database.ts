@@ -1,42 +1,47 @@
-import { tool } from "ai";
-import { z } from "zod";
-import { openai } from "@/lib/clients";
 import { pinecone } from "@/lib/clients";
-import { upsertVectorsSdk } from "@/lib/pinecone-upsert";
-import { PINECONE_INDEX_NAME } from '@/config';
+import OpenAI from "openai";
 
-export const writeVectorDatabase = tool({
-  description: "Embed text and store in Pinecone",
-  inputSchema: z.object({
-    id: z.string().optional(),
-    text: z.string(),
-    namespace: z.string().optional(),
-    metadata: z.object({}).catchall(z.any()).optional(),
-  }),
-  execute: async ({ id, text, namespace, metadata }) => {
-    const vectorId = id ?? `doc-${Date.now()}`;
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+});
 
-    // IMPORTANT: must use a 1024-dim model because your index dimension = 1024
-     const emb = await pinecone.inference.embed(
-      'multilingual-e5-large', // Use a valid model instead of llama-text-embed-v2
-      documents.map(doc => doc.text),
-      { inputType: 'passage' }
-    );
-
-    const values = emb.data[0].embedding;
-
-    const resp = await upsertVectorsSdk({
-      indexName: PINECONE_INDEX_NAME,
-      namespace: namespace ?? "default",
-      vectors: [
-        {
-          id: vectorId,
-          values,
-          metadata: metadata ?? {},
-        },
-      ],
+export async function upsertTextsSdk({
+  indexName,
+  namespace,
+  texts,
+}: {
+  indexName: string;
+  namespace?: string;
+  texts: Array<{ id: string; text: string; metadata?: Record<string, any> }>;
+}) {
+  const index = pinecone.index(indexName);
+  
+  try {
+    // Generate embeddings
+    const embeddingPromises = texts.map(async (item) => {
+      const response = await openai.embeddings.create({
+        model: "text-embedding-3-small",
+        input: item.text,
+        dimensions: 1024, // ⭐ Match your Pinecone index dimension
+      });
+      
+      return {
+        id: item.id,
+        values: response.data[0].embedding,
+        metadata: { ...item.metadata, text: item.text },
+      };
     });
 
-    return { success: true, id: vectorId, pineconeResponse: resp };
-  },
-});
+    const vectors = await Promise.all(embeddingPromises);
+
+    // Upsert to Pinecone
+    const resp = namespace 
+      ? await index.namespace(namespace).upsert(vectors)
+      : await index.upsert(vectors);
+    
+    return resp;
+  } catch (err) {
+    console.error("Pinecone upsert failed:", err);
+    throw err;
+  }
+}
