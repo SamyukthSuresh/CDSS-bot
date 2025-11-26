@@ -59,7 +59,7 @@ export async function POST(req: Request) {
         }
     }
 
-    export const runtime = "nodejs";
+    
     const result = streamText({
         model: MODEL,
         system: SYSTEM_PROMPT,
