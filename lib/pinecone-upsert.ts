@@ -10,13 +10,13 @@ export async function upsertVectorsSdk({
   vectors: Array<{ id: string; values: number[]; metadata?: Record<string, any> }>;
 }) {
   const index = pinecone.index(indexName);
-
+  
   try {
-    // new SDK v2 correct format
-    const resp = await index.upsert({
-      vectors,
-      namespace,
-    });
+    // SDK v2+ correct format - pass vectors directly, namespace as option
+    const resp = namespace 
+      ? await index.namespace(namespace).upsert(vectors)
+      : await index.upsert(vectors);
+    
     return resp;
   } catch (err) {
     console.error("Pinecone SDK upsert failed:", err);
