@@ -18,7 +18,7 @@ export async function upsertTextToPinecone({
 
   // 1) create embedding
   const embeddingResp = await openai.embeddings.create({
-    model: "llama-text-embed-v2", // or text-embedding-3-large
+    model: "text-embedding-3-small", // or text-embedding-3-large
     input: text,
   });
 
