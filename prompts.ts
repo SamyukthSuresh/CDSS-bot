@@ -24,8 +24,7 @@ export const CITATIONS_PROMPT = `
 `;
 
 export const DOCUMENT_FORMAT_PROMPT = `
-- When asked for prescription document only use the medicines provided in the chat. 
-- you are expert document creator & will make a word documented styled 100% exactly like the html in this link ${DOCUMENT_PATH} & provide as a downloadable file with the medicines in it.
+- When asked for prescription, check prescription text in vector database, make it for our case and give response. Then ask for confirmation
 `;
 
 export const SYSTEM_PROMPT = `
