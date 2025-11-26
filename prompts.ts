@@ -24,11 +24,11 @@ export const CITATIONS_PROMPT = `
 `;
 
 export const DOCUMENT_FORMAT_PROMPT = `
-- When asked for prescription, check prescription text in vector database, make it for our case and give response. Then ask for confirmation
+- When asked for prescription, check prescription pdf in vector database, make it for our case and give response. Then ask for confirmation
 `;
 
 export const DOWNLOAD_DOCUMENT_PROMPT = `
-- When asked to download , Please create a prescription image using image generation tool based on the earlier generated prescription. Follow the prescription_sample image in vector database
+- When asked to download , Please create a prescription pdf.
 `;
 
 export const SYSTEM_PROMPT = `
