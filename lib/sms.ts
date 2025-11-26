@@ -44,14 +44,3 @@ export async function sendSMS(to: string, message: string) {
     throw error;
   }
 }
-```
-
-**Key changes:**
-1. ✅ Added validation check for environment variables
-2. ✅ Added `.toString()` after `URLSearchParams` to convert it to a string
-
-This should fix the TypeScript error! Make sure your `.env.local` has all three variables set:
-```
-TWILIO_ACCOUNT_SID=ACxxxxxxxxxx
-TWILIO_AUTH_TOKEN=your_token_here
-TWILIO_PHONE_NUMBER=+1234567890
