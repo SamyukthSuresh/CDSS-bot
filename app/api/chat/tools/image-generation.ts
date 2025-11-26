@@ -6,25 +6,21 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-const imageGenerationParameters = z.object({
-  prompt: z.string().describe('A detailed description of the image to generate'),
-  size: z.enum(['1024x1024', '1792x1024', '1024x1792']).optional().describe('The size of the generated image'),
-  quality: z.enum(['standard', 'hd']).optional().describe('The quality of the image'),
-});
-
 export const imageGeneration = tool({
   description: 'Generate images based on text descriptions. Use this when the user asks you to create, generate, or draw an image.',
-  parameters: imageGenerationParameters,
-  execute: async function(args: z.infer<typeof imageGenerationParameters>) {
-    const { prompt, size, quality } = args;
-    
+  parameters: z.object({
+    prompt: z.string().describe('A detailed description of the image to generate'),
+    size: z.enum(['1024x1024', '1792x1024', '1024x1792']).optional().describe('The size of the generated image'),
+    quality: z.enum(['standard', 'hd']).optional().describe('The quality of the image'),
+  }),
+  execute: async ({ prompt, size, quality }) => {
     try {
       const response = await openai.images.generate({
         model: 'dall-e-3',
-        prompt: prompt,
+        prompt,
         n: 1,
-        size: size ?? '1024x1024',
-        quality: quality ?? 'standard',
+        size: (size || '1024x1024') as '1024x1024' | '1792x1024' | '1024x1792',
+        quality: (quality || 'standard') as 'standard' | 'hd',
       });
 
       const imageUrl = response.data[0]?.url;
