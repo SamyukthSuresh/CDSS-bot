@@ -57,3 +57,6 @@ export const PINECONE_TOP_K = 40;
 export const PINECONE_INDEX_NAME = "cdss-bot";
 export const PINECONE_API_KEY="cpcsk_2hZrsM_DYFPYCSMSPsuv6bRRA3VjGktzgHADfpvNnQRecZvn8oj1c6joHfmxJpscjTK8nQ";
 export const PINECONE_HOST="https://cdss-bot-zkp6imn.svc.aped-4627-b74a.pinecone.io";
+export const TWILIO_ACCOUNT_SID="ACf3ef3a25aa6d1dec0ff8a4a61aa30aef";
+export const TWILIO_AUTH_TOKEN="39ad75a22bf36afabcf37a543ecc94f3";
+export const TWILIO_PHONE_NUMBER=+14013563393;
