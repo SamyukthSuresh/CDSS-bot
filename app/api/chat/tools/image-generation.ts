@@ -6,15 +6,17 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
+const imageGenerationParameters = z.object({
+  prompt: z.string().describe('A detailed description of the image to generate'),
+  size: z.enum(['1024x1024', '1792x1024', '1024x1792']).optional().describe('The size of the generated image'),
+  quality: z.enum(['standard', 'hd']).optional().describe('The quality of the image'),
+});
+
 export const imageGeneration = tool({
   description: 'Generate images based on text descriptions. Use this when the user asks you to create, generate, or draw an image.',
-  parameters: z.object({
-    prompt: z.string().describe('A detailed description of the image to generate'),
-    size: z.enum(['1024x1024', '1792x1024', '1024x1792']).optional().describe('The size of the generated image'),
-    quality: z.enum(['standard', 'hd']).optional().describe('The quality of the image'),
-  }),
-  execute: async (args:any) => { // Change to single args parameter
-    const { prompt, size, quality } = args; // Destructure inside the function
+  parameters: imageGenerationParameters,
+  execute: async function(args: z.infer<typeof imageGenerationParameters>) {
+    const { prompt, size, quality } = args;
     
     try {
       const response = await openai.images.generate({
