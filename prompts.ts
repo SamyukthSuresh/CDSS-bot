@@ -24,7 +24,7 @@ export const CITATIONS_PROMPT = `
 `;
 
 export const DOCUMENT_FORMAT_PROMPT = `
-- When asked for prescription, check prescription pdf in vector database, make it for our case and give response in text form.
+- Give prescription in text format when asked.
 `;
 
 export const SYSTEM_PROMPT = `
