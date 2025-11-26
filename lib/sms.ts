@@ -1,7 +1,8 @@
 export async function sendSMS(to: string, message: string) {
-  const accountSid = process.env.TWILIO_ACCOUNT_SID;
-  const authToken = process.env.TWILIO_AUTH_TOKEN;
-  const from = process.env.TWILIO_PHONE_NUMBER;
+  import { TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_PHONE_NUMBER } from '@/config';
+  const accountSid = TWILIO_ACCOUNT_SID;
+  const authToken = TWILIO_AUTH_TOKEN;
+  const from = TWILIO_PHONE_NUMBER;
 
   // Validate environment variables
   if (!accountSid || !authToken || !from) {
