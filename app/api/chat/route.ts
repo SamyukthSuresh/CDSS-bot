@@ -7,6 +7,7 @@ import { webSearch } from './tools/web-search';
 import { vectorDatabaseSearch } from './tools/search-vector-database';
 import { writeVectorDatabase } from './tools/write-vector-database';
 // import { imageGeneration } from './tools/image-generation';
+import { sendSMSPrescription } from './tools/send-sms-prescription';
 
 export const maxDuration = 30;
 export async function POST(req: Request) {
@@ -71,6 +72,7 @@ export async function POST(req: Request) {
             vectorDatabaseSearch,
             // imageGeneration,
             writeVectorDatabase,
+            sendSMSPrescription
         },
         stopWhen: stepCountIs(10),
         providerOptions: {
