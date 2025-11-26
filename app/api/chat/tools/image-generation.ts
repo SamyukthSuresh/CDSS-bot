@@ -13,18 +13,15 @@ export const imageGeneration = tool({
     size: z.enum(['1024x1024', '1792x1024', '1024x1792']).optional().describe('The size of the generated image'),
     quality: z.enum(['standard', 'hd']).optional().describe('The quality of the image'),
   }),
-  execute: async ({ prompt, size = '1024x1024', quality = 'standard' }) => {
+  execute: async ({ prompt, size, quality }) => { // Remove the default values here
     try {
-      // Explicitly type the parameters
-      const params: OpenAI.Images.ImageGenerateParams = {
+      const response = await openai.images.generate({
         model: 'dall-e-3',
         prompt: prompt,
         n: 1,
-        size: size,
-        quality: quality,
-      };
-
-      const response = await openai.images.generate(params);
+        size: size ?? '1024x1024', // Use nullish coalescing operator instead
+        quality: quality ?? 'standard', // Use nullish coalescing operator instead
+      });
 
       const imageUrl = response.data[0]?.url;
       
