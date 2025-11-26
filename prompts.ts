@@ -55,7 +55,7 @@ ${DOCUMENT_FORMAT_PROMPT}
 </document_format>
 
 <document_download>
-${DOCUMENT_DOWNLOAD_PROMPT}
+${DOWNLOAD_DOCUMENT_PROMPT}
 </document_download>
 
 <date_time>
