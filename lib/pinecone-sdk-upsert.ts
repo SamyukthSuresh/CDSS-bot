@@ -1,5 +1,6 @@
 / /lib/pinecone-sdk-upsert.ts
 import { pinecone, openai } from "./clients";
+import { PINECONE_INDEX_NAME } from '@/config';
 
 export async function upsertVectorsSdk({
   indexName,
@@ -11,7 +12,7 @@ export async function upsertVectorsSdk({
   vectors: Array<{ id: string; values: number[]; metadata?: Record<string, any> }>;
 }) {
   if (!indexName) throw new Error("indexName required");
-  const index = pinecone.Index(indexName);
+  const index = pinecone.Index(PINECONE_INDEX_NAME);
 
   // Modern SDK expects an object with `vectors` + optional `namespace`
   // If your installed SDK has a different signature, try the array-only form: index.upsert(vectors)
