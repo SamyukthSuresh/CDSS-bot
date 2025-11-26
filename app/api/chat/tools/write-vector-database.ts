@@ -10,7 +10,6 @@ const openai = new OpenAI({
 export const writeVectorDatabase = tool({
   description: 'Write or upsert documents to the vector database. Use this to store information for future retrieval.',
   parameters: z.object({
-    indexName: z.string().describe('The name of the Pinecone index (use "cdss-bot")'),
     namespace: z.string().optional().describe('The namespace to write to (use "default" if not specified)'),
     texts: z.array(
       z.object({
@@ -20,7 +19,9 @@ export const writeVectorDatabase = tool({
       })
     ).describe('Array of documents to upsert to the database'),
   }),
-  execute: async ({ indexName, namespace, texts }) => {
+  execute: async ({ namespace, texts }) => {
+    // ✅ Hardcoded index name
+    const indexName = 'cdss-bot';
     const index = pinecone.index(indexName);
     
     try {
@@ -29,7 +30,7 @@ export const writeVectorDatabase = tool({
         const response = await openai.embeddings.create({
           model: "text-embedding-3-small",
           input: item.text,
-          dimensions: 1024, // Match your Pinecone index dimension
+          dimensions: 1024,
         });
         
         return {
