@@ -29,7 +29,7 @@ export const COURSE_CONTEXT_PROMPT = `
 `;
 
 export const DOCUMENT_FORMAT_PROMPT = `
-- When making the prescription document always follow the document format present in ${DOCUMENT_PATH}.
+- When asked for prescription document, always make the document in the format present in ${DOCUMENT_PATH}. Using the html present in that path , make the document and convert that into a image and provide me
 `;
 
 export const SYSTEM_PROMPT = `
