@@ -8,7 +8,7 @@ export const writeVectorDatabase = tool({
     id: z.string().optional().describe("Unique id for the vector. If omitted, server will generate one."),
     text: z.string().describe("The text to embed and store"),
     namespace: z.string().optional(),
-    metadata: z.record(z.any()).optional(),
+    metadata:  metadata: z.object({}).catchall(z.any()).optional(),
   }),
   execute: async ({ id, text, namespace, metadata }) => {
     // generate an id if not provided
