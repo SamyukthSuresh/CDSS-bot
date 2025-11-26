@@ -46,10 +46,6 @@ ${GUARDRAILS_PROMPT}
 ${CITATIONS_PROMPT}
 </citations>
 
-<course_context>
-${COURSE_CONTEXT_PROMPT}
-</course_context>
-
 <document_format>
 ${DOCUMENT_FORMAT_PROMPT}
 </document_format>
