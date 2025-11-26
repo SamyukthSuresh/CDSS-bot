@@ -1,4 +1,5 @@
 import { pinecone, openai } from "./client";
+import { PINECONE_INDEX_NAME } from '@/config';
 
 export async function upsertTextToPinecone({
   id,
@@ -13,7 +14,7 @@ export async function upsertTextToPinecone({
 }) {
   if (!process.env.PINECONE_INDEX) throw new Error("PINECONE_INDEX not set");
 
-  const index = pinecone.Index(process.env.PINECONE_INDEX);
+  const index = pinecone.Index(PINECONE_INDEX_NAME);
 
   // 1) create embedding
   const embeddingResp = await openai.embeddings.create({
