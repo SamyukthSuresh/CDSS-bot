@@ -13,9 +13,8 @@ export async function upsertTextToPinecone({
   namespace?: string;
   metadata?: Record<string, any>;
 }) {
-  if (!process.env.PINECONE_INDEX) throw new Error("PINECONE_INDEX not set");
 
-  const index = pinecone.Index(PINECONE_INDEX);
+  const index = pinecone.Index(PINECONE_INDEX_NAME);
 
   // 1) create embedding
   const embeddingResp = await openai.embeddings.create({
