@@ -1,24 +1,42 @@
+// tools/write-vector-database.ts
 import { tool } from "ai";
 import { z } from "zod";
-import { upsertTextToPinecone } from "./pinecone";
+import { upsertVectorsRest } from "@/lib/pinecone-rest";
+import OpenAI from "openai";
+
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY!,
+});
 
 export const writeVectorDatabase = tool({
-  description: "Write a text and its OpenAI embedding into Pinecone",
+  description: "Embed text and store it in Pinecone using REST API",
   inputSchema: z.object({
-    id: z.string().optional().describe("Unique id for the vector. If omitted, server will generate one."),
-    text: z.string().describe("The text to embed and store"),
+    id: z.string().optional(),
+    text: z.string(),
     namespace: z.string().optional(),
-    metadata:  z.object({}).catchall(z.any()).optional(),
+    metadata: z.object({}).catchall(z.any()).optional(),
   }),
   execute: async ({ id, text, namespace, metadata }) => {
-    // generate an id if not provided
-    const vectorId = id ?? `doc-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+    const vectorId = id ?? `doc-${Date.now()}`;
 
-    const resp = await upsertTextToPinecone({
+    // Create embedding using OpenAI
+    const emb = await openai.embeddings.create({
+      model: "text-embedding-3-small", // <-- If your index uses 1536 dims
+      input: text,
+    });
+
+    const vector = {
       id: vectorId,
-      text,
-      namespace,
+      values: emb.data[0].embedding,
       metadata: metadata ?? {},
+    };
+
+    // Call REST upsert
+    const resp = await upsertVectorsRest({
+      host: process.env.PINECONE_HOST!,  // Must be set in .env
+      apiKey: process.env.PINECONE_API_KEY!,
+      namespace: namespace ?? "default",
+      vectors: [vector],
     });
 
     return {
