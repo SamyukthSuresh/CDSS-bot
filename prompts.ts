@@ -24,11 +24,7 @@ export const CITATIONS_PROMPT = `
 `;
 
 export const DOCUMENT_FORMAT_PROMPT = `
-- When asked for prescription, check prescription pdf in vector database, make it for our case and give response. Then ask for confirmation
-`;
-
-export const DOWNLOAD_DOCUMENT_PROMPT = `
-- When asked to download , Please create a prescription pdf.
+- When asked for prescription, check prescription pdf in vector database, make it for our case and give response in text form.
 `;
 
 export const SYSTEM_PROMPT = `
@@ -53,10 +49,6 @@ ${CITATIONS_PROMPT}
 <document_format>
 ${DOCUMENT_FORMAT_PROMPT}
 </document_format>
-
-<document_download>
-${DOWNLOAD_DOCUMENT_PROMPT}
-</document_download>
 
 <date_time>
 ${DATE_AND_TIME}
