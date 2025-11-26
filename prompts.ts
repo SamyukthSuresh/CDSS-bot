@@ -24,7 +24,7 @@ export const CITATIONS_PROMPT = `
 `;
 
 export const DOCUMENT_FORMAT_PROMPT = `
-- Give prescription in text format when asked.
+- Give prescription in text format when asked & write it into vector database.
 `;
 
 export const SYSTEM_PROMPT = `
