@@ -3,7 +3,7 @@ import { tool } from "ai";
 import { z } from "zod";
 import { upsertVectorsRest } from "@/lib/pinecone-rest";
 import OpenAI from "openai";
-import { PINECONE_HOST } from '@/config';
+import { PINECONE_HOST, PINECONE_API_KEY } from '@/config';
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY!,
@@ -35,7 +35,7 @@ export const writeVectorDatabase = tool({
     // Call REST upsert
     const resp = await upsertVectorsRest({
       host: PINECONE_HOST,  // Must be set in .env
-      apiKey: process.env.PINECONE_API_KEY!,
+      apiKey: PINECONE_API_KEY,
       namespace: namespace ?? "default",
       vectors: [vector],
     });
