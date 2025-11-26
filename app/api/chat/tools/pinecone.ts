@@ -1,5 +1,5 @@
-import { pinecone, openai } from "./client";
-import { PINECONE_INDEX_NAME } from '@/config';
+// /lib/pinecone.ts
+import { pinecone, openai } from "./clients";
 
 export async function upsertTextToPinecone({
   id,
@@ -14,31 +14,30 @@ export async function upsertTextToPinecone({
 }) {
   if (!process.env.PINECONE_INDEX) throw new Error("PINECONE_INDEX not set");
 
-  const index = pinecone.Index(PINECONE_INDEX_NAME);
+  const index = pinecone.Index(process.env.PINECONE_INDEX);
 
   // 1) create embedding
   const embeddingResp = await openai.embeddings.create({
-    model: "llama-text-embed-v2", // or large if you prefer
+    model: "llama-text-embed-v2", // or text-embedding-3-large
     input: text,
   });
 
   const vector = embeddingResp.data[0].embedding;
 
-  // 2) upsert into pinecone
+  // 2) upsert into pinecone — correct call shape for current SDK
   const upsertResp = await index.upsert({
-    upsertRequest: {
-      vectors: [
-        {
-          id,
-          values: vector,
-          metadata: {
-            text,
-            ...metadata,
-          },
+    vectors: [
+      {
+        id,
+        values: vector,
+        metadata: {
+          text,
+          ...metadata,
         },
-      ],
-      namespace,
-    },
+      },
+    ],
+    // only include namespace if you care about namespacing (optional)
+    namespace,
   });
 
   return upsertResp;
