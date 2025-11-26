@@ -9,7 +9,7 @@ const openai = new OpenAI({
 
 export const writeVectorDatabase = tool({
   description: 'Write or upsert documents to the vector database. Use this to store information for future retrieval.',
-  parameters: z.object({
+  inputSchema: z.object({
     namespace: z.string().optional().describe('The namespace to write to (use "default" if not specified)'),
     texts: z.array(
       z.object({
@@ -19,7 +19,7 @@ export const writeVectorDatabase = tool({
       })
     ).describe('Array of documents to upsert to the database'),
   }),
-  execute: async function({ namespace, texts }) {
+  execute: async ({ namespace, texts }) => {
     const indexName = 'cdss-bot';
     const index = pinecone.index(indexName);
     
