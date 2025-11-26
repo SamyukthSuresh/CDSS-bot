@@ -27,6 +27,10 @@ export const DOCUMENT_FORMAT_PROMPT = `
 - When asked for prescription, check prescription text in vector database, make it for our case and give response. Then ask for confirmation
 `;
 
+export const DOWNLOAD_DOCUMENT_PROMPT = `
+- Please create a prescription image based on the earlier generated prescription. Follow the prescription_sample image in vector database
+`;
+
 export const SYSTEM_PROMPT = `
 ${IDENTITY_PROMPT}
 
