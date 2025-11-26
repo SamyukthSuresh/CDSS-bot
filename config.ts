@@ -32,7 +32,7 @@ export const DATE_AND_TIME = getDateAndTime();
 
 export const AI_NAME = "CDSS-BOT";
 export const OWNER_NAME = "RSS";
-export const DOCUMENT_PATH = "public/prescription_format"; 
+export const DOCUMENT_PATH = "public/Prescription.html"; 
 
 export const WELCOME_MESSAGE = `Hello! I'm ${AI_NAME}, an AI assistant created by ${OWNER_NAME}.`
 
