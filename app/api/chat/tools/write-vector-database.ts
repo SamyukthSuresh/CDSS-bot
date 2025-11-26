@@ -1,6 +1,7 @@
 import { tool } from "ai";
 import { z } from "zod";
 import { openai } from "@/lib/clients";
+import { pinecone } from "@/lib/clients";
 import { upsertVectorsSdk } from "@/lib/pinecone-upsert";
 import { PINECONE_INDEX_NAME } from '@/config';
 
