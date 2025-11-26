@@ -68,13 +68,12 @@ export async function POST(req: Request) {
             webSearch,
             vectorDatabaseSearch,
         },
-        stopWhen: stepCountIs(50),
         providerOptions: {
             openai: {
                 reasoningSummary: 'auto',
                 reasoningEffort: 'high',
                 parallelToolCalls: false,
-                max_output_tokens: 5000, 
+                max_output_tokens: 10000, 
             }
         }
     });
