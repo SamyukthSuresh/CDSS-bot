@@ -1,5 +1,5 @@
+import { TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_PHONE_NUMBER } from '@/config';
 export async function sendSMS(to: string, message: string) {
-  import { TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_PHONE_NUMBER } from '@/config';
   const accountSid = TWILIO_ACCOUNT_SID;
   const authToken = TWILIO_AUTH_TOKEN;
   const from = TWILIO_PHONE_NUMBER;
