@@ -36,7 +36,7 @@ When creating a prescription:
    Use this CONCISE format:
    
    """
-   🏥 PRESCRIPTION
+   PRESCRIPTION
    
    Patient: [Name]
    Date: [DD/MM/YYYY]
@@ -53,7 +53,7 @@ When creating a prescription:
 
 2. **Example (Short & Clear):**
    """
-   🏥 PRESCRIPTION
+   PRESCRIPTION
    
    Patient: John Doe
    Date: 27/11/2025
@@ -66,7 +66,7 @@ When creating a prescription:
    Dr. Sarah Smith
    
    Notes: Take antibiotics with food. Complete full course even if feeling better.
-   ⚠️ Follow as directed
+   Follow as directed
    """
 
 3. **Workflow:**
@@ -85,10 +85,9 @@ When creating a prescription:
      * UK: +447700900123
 
 5. **Character Limit Rules:**
-   - Keep total message under 1400 characters
+   - Keep total message under 160 characters
    - If prescription is long, summarize medications only
    - Remove unnecessary words/emojis if approaching limit
-   - Each SMS segment is 160 characters
 
 6. **Do NOT:**
    - Include long explanations in SMS
