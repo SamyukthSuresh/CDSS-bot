@@ -19,13 +19,11 @@ export const writeVectorDatabase = tool({
       })
     ).describe('Array of documents to upsert to the database'),
   }),
-  execute: async ({ namespace, texts }) => {
-    // ✅ Hardcoded index name
+  execute: async function({ namespace, texts }) {
     const indexName = 'cdss-bot';
     const index = pinecone.index(indexName);
     
     try {
-      // Generate embeddings
       const embeddingPromises = texts.map(async (item) => {
         const response = await openai.embeddings.create({
           model: "text-embedding-3-small",
@@ -42,7 +40,6 @@ export const writeVectorDatabase = tool({
 
       const vectors = await Promise.all(embeddingPromises);
 
-      // Upsert to Pinecone
       const resp = namespace 
         ? await index.namespace(namespace).upsert(vectors)
         : await index.upsert(vectors);
