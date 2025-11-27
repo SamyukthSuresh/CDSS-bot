@@ -139,6 +139,15 @@ const WelcomeMessage = () => {
               <span className="text-green-500 mt-0.5">•</span>
               <span>Include prescription ID for easy reference</span>
             </li>
+            <li className="flex items-start gap-2">
+              <span className="text-green-500 mt-0.5">📱</span>
+              <span>SMS can only be sent to whitelisted Twilio numbers. Contact bot owner to add yours.</span>
+            </li>
+            <h3 className="font-semibold text-foreground">Note:</h3>
+            <li className="flex items-start gap-2">
+              <span className="text-green-500 mt-0.5">⏳</span>
+              <span>If model doesn't respond, please wait - OpenAI may timeout occasionally.</span>
+            </li>
           </ul>
         </div>
       </div>
