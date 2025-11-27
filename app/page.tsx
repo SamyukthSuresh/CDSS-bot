@@ -146,7 +146,7 @@ const WelcomeMessage = () => {
             </li>
             <li className="flex items-start gap-2">
               <span className="text-green-500 mt-0.5">⏳</span>
-              <span>If model doesn't respond, please wait - OpenAI may timeout occasionally.</span>
+              <span>If model doesn't respond, please wait or re-enter the prompt - OpenAI may timeout occasionally.</span>
             </li>
           </ul>
         </div>
