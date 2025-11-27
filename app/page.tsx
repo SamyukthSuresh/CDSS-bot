@@ -271,7 +271,7 @@ export default function Chat() {
           <div className="w-full px-4 py-3 items-center flex justify-center text-xs text-muted-foreground/70">
             <div className="flex items-center gap-1.5">
               <Sparkles className="size-3" />
-              <span>Powered by AI</span>
+              <span>Patient data must remain strictly confidential and cannot be shared without the patient’s explicit consent.</span>
               <span className="mx-2">|</span>
               <span>&copy; {new Date().getFullYear()} {OWNER_NAME}</span>
               <span className="mx-2">|</span>
