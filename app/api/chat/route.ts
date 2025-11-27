@@ -80,7 +80,7 @@ export async function POST(req: Request) {
                 reasoningSummary: 'auto',
                 reasoningEffort: 'high',
                 parallelToolCalls: false,
-                max_output_tokens: 10000, 
+                max_output_tokens: 3000, 
             }
         }
     });
