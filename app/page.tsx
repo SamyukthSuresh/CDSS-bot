@@ -146,7 +146,7 @@ const WelcomeMessage = () => {
             </li>
             <li className="flex items-start gap-2">
               <span className="text-green-500 mt-0.5">⏳</span>
-              <span>If model doesn't respond, please wait or re-enter the prompt - OpenAI may timeout occasionally.</span>
+              <span>If model doesn't respond, please wait or re-enter the prompt - OpenAI may timeout occasionally.</span>
             </li>
           </ul>
         </div>
@@ -285,9 +285,24 @@ export default function Chat() {
                 </Button>
               </ChatHeaderBlock>
             </ChatHeader>
+            
+            {/* Video Reference Banner */}
+            <div className="mt-3 bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-blue-500/10 backdrop-blur-sm rounded-xl p-3 border border-blue-500/20 shadow-sm">
+              <Link 
+                href="https://drive.google.com/file/d/1ngLDR7yK5mK68lNSeQY_B2qCAhNA_oiT/view?usp=sharing"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-2 text-sm font-medium text-foreground hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200 group"
+              >
+                <svg className="w-5 h-5 text-blue-500 group-hover:scale-110 transition-transform duration-200" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z" />
+                </svg>
+                <span>Want a quick reference? <span className="underline">Watch the tutorial video</span></span>
+              </Link>
+            </div>
           </div>
         </div>
-        <div className="h-screen overflow-y-auto scrollbar-thin px-4 py-4 w-full pt-[100px] pb-[160px]">
+        <div className="h-screen overflow-y-auto scrollbar-thin px-4 py-4 w-full pt-[140px] pb-[160px]">
           <div className="flex flex-col items-center justify-end min-h-full">
             {isClient ? (
               <>
@@ -400,4 +415,4 @@ export default function Chat() {
       </main>
     </div>
   );
-} 
+}
