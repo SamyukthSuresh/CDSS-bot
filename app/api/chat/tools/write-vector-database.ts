@@ -8,16 +8,24 @@ const openai = new OpenAI({
 });
 
 export const writeVectorDatabase = tool({
-  description: 'Write or upsert documents to the vector database. Use this to store information for future retrieval.',
+  description: 'Write or upsert prescription documents to the vector database. Use this to store prescriptions for future retrieval.',
   inputSchema: z.object({
     namespace: z.string().optional().describe('The namespace to write to (use "default" if not specified)'),
     texts: z.array(
       z.object({
-        id: z.string().describe('Unique identifier for the document'),
-        text: z.string().describe('The text content to embed and store'),
-        metadata: z.record(z.string(), z.any()).optional().describe('Additional metadata to store with the vector'),
+        id: z.string().describe('Unique prescription ID (e.g., RX123456)'),
+        text: z.string().describe('The complete prescription text to store'),
+        metadata: z.object({
+          patientName: z.string().describe('Patient full name'),
+          date: z.string().describe('Prescription date'),
+          prescriptionId: z.string().describe('Prescription ID'),
+          allergies: z.array(z.string()).describe('List of patient allergies'),
+          medications: z.array(z.any()).optional().describe('List of medications'),
+          doctor: z.string().describe('Doctor name'),
+          symptoms: z.string().optional().describe('Patient symptoms'),
+        }).passthrough(),
       })
-    ).describe('Array of documents to upsert to the database'),
+    ).describe('Array of prescription documents to upsert to the database'),
   }),
   execute: async ({ namespace, texts }) => {
     const indexName = 'cdss-bot';
