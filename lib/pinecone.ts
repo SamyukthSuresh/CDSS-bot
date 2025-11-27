@@ -74,21 +74,19 @@ Medical record for: ${patientName}
         
         console.log('Upserting prescription for:', patientName);
         
-        // Use upsertRecords with inference API
-        const result = await pineconeIndex.namespace('default').upsertRecords({
-            records: [
-                {
-                    id: prescriptionId,
-                    text: enhancedText,
-                    metadata: {
-                        ...metadata,
-                        patientName: patientName,
-                        source_type: 'prescription',
-                        source_description: `Prescription for ${patientName}`,
-                    },
+        // Use upsertRecords with inference API - pass array directly
+        const result = await pineconeIndex.namespace('default').upsertRecords([
+            {
+                id: prescriptionId,
+                text: enhancedText,
+                metadata: {
+                    ...metadata,
+                    patientName: patientName,
+                    source_type: 'prescription',
+                    source_description: `Prescription for ${patientName}`,
                 },
-            ],
-        });
+            },
+        ]);
         
         console.log('Upsert successful');
         return result;
