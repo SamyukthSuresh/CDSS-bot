@@ -78,16 +78,15 @@ Medical record for: ${item.metadata.patientName}
       
       const vectors = await Promise.all(embeddingPromises);
       
-      const resp = namespace 
-        ? await index.namespace(namespace).upsert(vectors)
-        : await index.upsert(vectors);
+      const resp = await index.namespace('default').upsert(vectors);
+       
       
       return {
         success: true,
         upsertedCount: texts.length,
         vectorIds: vectors.map(v => v.id), // Return the IDs!
         indexName,
-        namespace: namespace || 'default',
+        namespace: 'default',
         message: `Successfully stored ${texts.length} prescription(s). Vector IDs: ${vectors.map(v => v.id).join(', ')}`,
       };
     } catch (err) {
