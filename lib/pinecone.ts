@@ -1,3 +1,14 @@
+import { Pinecone } from '@pinecone-database/pinecone';
+import { PINECONE_TOP_K } from '@/config';
+import { searchResultsToChunks, getSourcesFromChunks, getContextFromSources } from '@/lib/sources';
+import { PINECONE_INDEX_NAME } from '@/config';
+if (!process.env.PINECONE_API_KEY) {
+    throw new Error('PINECONE_API_KEY is not set');
+}
+export const pinecone = new Pinecone({
+    apiKey: process.env.PINECONE_API_KEY,
+});
+export const pineconeIndex = pinecone.Index(PINECONE_INDEX_NAME);
 export async function searchPinecone(
     query: string,
     prescriptionId?: string
