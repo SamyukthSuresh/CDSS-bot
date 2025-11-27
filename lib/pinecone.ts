@@ -68,4 +68,32 @@ Patient Name: ${patientName}
 
 ${prescriptionText}
 
-This prescription belongs to patient: ${p
+This prescription belongs to patient: ${patientName}
+Medical record for: ${patientName}
+        `.trim();
+        
+        console.log('Upserting prescription for:', patientName);
+        
+        // Use upsertRecords with inference API
+        const result = await pineconeIndex.namespace('default').upsertRecords({
+            records: [
+                {
+                    id: prescriptionId,
+                    text: enhancedText,
+                    metadata: {
+                        ...metadata,
+                        patientName: patientName,
+                        source_type: 'prescription',
+                        source_description: `Prescription for ${patientName}`,
+                    },
+                },
+            ],
+        });
+        
+        console.log('Upsert successful');
+        return result;
+    } catch (error) {
+        console.error('Upsert failed:', error);
+        throw error;
+    }
+}
