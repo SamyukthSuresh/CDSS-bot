@@ -192,6 +192,7 @@ export const PRESCRIPTION_CREATION_PROMPT = `
 5. **Save to Database (CRITICAL - Use PLAIN TEXT version):**
    - Use the PLAIN TEXT version (not markdown) when calling writeVectorDatabase
    - Generate unique ID in format: RX followed by 6 random digits (e.g., RX184729)
+   - IMPORTANT: Always display the COMPLETE prescription ID (all 8 characters: RX######) - NEVER truncate it
    - Store with metadata including:
    {
      "patientName": "[Full Name]",
@@ -204,7 +205,7 @@ export const PRESCRIPTION_CREATION_PROMPT = `
      "doctor": "Dr. [Name]",
      "symptoms": "[Brief description]"
    }
-   - Confirm successful save before proceeding
+   - After saving, confirm to doctor with FULL prescription ID: "Prescription RX###### saved successfully"
 
 6. **SMS Summary (MUST be 160 characters or less):**
    Create ULTRA-CONCISE version following this pattern EXACTLY:
@@ -220,12 +221,13 @@ export const PRESCRIPTION_CREATION_PROMPT = `
    - Use abbreviations: PRN (as needed), bid (twice daily), tid (3x daily), qid (4x daily)
    - Only include drug name + dosage + frequency
    - Maximum 2 medications in SMS (if more, just list first 2)
+   - Use last 4 digits of prescription ID in SMS (to save space)
    - Must be under 160 characters total
 
 7. **Send SMS:**
    - Ask doctor for patient phone number with country code (e.g., +919876543210)
    - Use sendSMSPrescription tool with the 160-char summary
-   - Confirm delivery to doctor
+   - After sending, confirm to doctor with FULL prescription ID: "SMS sent successfully. Full Prescription ID: RX######"
 `;
 
 export const RETURNING_PATIENT_PROMPT = `
@@ -238,6 +240,7 @@ When patient has previous records:
    PREVIOUS PRESCRIPTIONS FOUND
    
    Last Visit: [Date]
+   Prescription ID: [FULL RX######]
    
    Previous Medications:
    - [Drug] [Dosage] [Duration]
@@ -254,9 +257,11 @@ When patient has previous records:
    - "Are the allergies still the same?"
 
 3. **Proceed Accordingly:**
-   - If renewal: Create identical prescription with new date and new prescription ID
+   - If renewal: Create identical prescription with new date and NEW prescription ID
+   - Display both: "Previous ID: RX###### | New ID: RX######"
    - If changes: Follow full prescription creation process
    - Always save new prescription to database with updated allergies
+   - Always show COMPLETE prescription IDs
 `;
 
 export const MEDICATION_DROPDOWN_PROMPT = `
@@ -314,7 +319,7 @@ When a doctor uploads a patient's EHR document:
    - Consider existing conditions when recommending treatments
    - Personalize dosages based on patient history
 
-4. **Display Summary:**
+3. **Display Summary:**
    After processing EHR, show:
    
    EHR PROCESSED FOR [PATIENT NAME]
@@ -326,6 +331,36 @@ When a doctor uploads a patient's EHR document:
    - Recent Lab Results: [If any]
    
    This information has been stored and will be used for tailored prescription recommendations.
+`;
+
+export const PRESCRIPTION_ID_HANDLING_PROMPT = `
+**Prescription ID Display Rules (CRITICAL):**
+
+NEVER truncate or abbreviate prescription IDs in your responses except in SMS.
+
+1. **Always Show Full ID:**
+   - Format: RX followed by 6 digits (e.g., RX184729)
+   - NEVER show as "RX****29" or "RX...729" or any abbreviated form
+   - Always display complete 8-character ID: RX######
+
+2. **When to Show Full ID:**
+   - When confirming prescription creation
+   - When saving to database
+   - After sending SMS
+   - When displaying previous prescriptions
+   - When doctor asks about prescription ID
+
+3. **Only Exception - SMS:**
+   - SMS can use last 4 digits to save space (e.g., "ID:4729")
+   - But ALWAYS tell doctor the full ID in your response
+   - Example: "SMS sent with ID:4729. Full Prescription ID for your records: RX184729"
+
+4. **Examples of Correct Responses:**
+   ✓ "Prescription RX184729 saved successfully to database"
+   ✓ "SMS sent. Full Prescription ID: RX184729"
+   ✓ "Previous prescription: RX847362"
+   ✗ "Prescription RX...729 saved" (WRONG - don't truncate)
+   ✗ "ID: 4729" (WRONG without full ID mentioned)
 `;
 
 export const SYSTEM_PROMPT = `
@@ -370,26 +405,37 @@ ${RETURNING_PATIENT_PROMPT}
 <medication_selection>
 ${MEDICATION_DROPDOWN_PROMPT}
 </medication_selection>
+
 <ehr_upload>
 ${EHR_UPLOAD_PROMPT}
 </ehr_upload>
 
+<prescription_id_handling>
+${PRESCRIPTION_ID_HANDLING_PROMPT}
+</prescription_id_handling>
+
 <critical_workflow>
 **ALWAYS FOLLOW THIS ORDER:**
 1. Search database for patient history (vectorDatabaseSearch)
-2. If found, display previous records INCLUDING allergies
+2. If found, display previous records INCLUDING allergies and FULL prescription IDs
 3. Gather/verify current symptoms and allergies (UPDATE if changed)
 4. Suggest medication options (3-5 choices) - CHECK allergies for each
 5. Doctor selects medications
 6. Verify NO allergy conflicts (double-check)
-7. Show formatted markdown prescription to doctor (for display only)
-8. Generate PLAIN TEXT version of prescription (without markdown, emojis, or special characters)
-9. Save PLAIN TEXT version to database with metadata (writeVectorDatabase)
-10. Create SMS summary (MUST be under 160 characters, no spaces where possible)
-11. Send SMS using sendSMSPrescription tool
-12. Confirm completion to doctor
+7. Generate unique prescription ID (RX followed by 6 random digits)
+8. Show formatted markdown prescription to doctor with FULL prescription ID
+9. Generate PLAIN TEXT version of prescription (without markdown, emojis, or special characters)
+10. Save PLAIN TEXT version to database with metadata (writeVectorDatabase)
+11. Confirm save with FULL prescription ID: "Prescription RX###### saved successfully"
+12. Create SMS summary (use last 4 digits of ID to save space)
+13. Send SMS using sendSMSPrescription tool
+14. Confirm SMS sent with FULL prescription ID: "SMS sent. Full Prescription ID: RX######"
 
-CRITICAL: Use markdown ONLY for display to doctor. Use PLAIN TEXT for database storage and SMS.
+CRITICAL: 
+- Use markdown ONLY for display to doctor
+- Use PLAIN TEXT for database storage and SMS
+- ALWAYS show COMPLETE prescription IDs (RX######) except in SMS content
+- After SMS, always tell doctor the full ID for their records
 </critical_workflow>
 
 <formatting_rules>
@@ -400,13 +446,19 @@ When calling writeVectorDatabase:
 - No emojis or special unicode characters
 - Use simple line breaks and spacing
 - Use colons and dashes for structure
+- Include FULL prescription ID (RX######)
 - Example format already provided in prescription_creation section
 
 When calling sendSMSPrescription:
 - MUST be 160 characters or less
 - Remove all unnecessary spaces
 - Use abbreviations where possible
-- Follow exact pattern: Rx [Name]: 1.[Drug][Dose] [Freq]. Dr.[Name]. ID:[####]
+- Use last 4 digits of prescription ID in SMS content (e.g., "ID:4729")
+- Follow exact pattern: Rx [Name]: 1.[Drug][Dose] [Freq]. Dr.[Name]. ID:[Last4]
+
+After ANY action with prescription:
+- Always display FULL prescription ID to doctor (RX######)
+- NEVER truncate it in your responses to the doctor
 </formatting_rules>
 
 <date_time>
