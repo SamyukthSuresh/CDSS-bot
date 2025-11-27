@@ -21,13 +21,46 @@ export async function searchPinecone(
     const idPattern = /^[A-Z]{2}\d+$/i; // Matches RX123456, PR123456, etc.
     const isLikelyId = idPattern.test(query.trim());
     
-    // If it's an ID, use metadata filter instead of vector search
+    // If it's an ID, try both methods
     if (isLikelyId || prescriptionId) {
         const id = prescriptionId || query.trim();
-        console.log('Searching by prescription ID metadata:', id);
+        console.log('Searching by prescription ID:', id);
         
+        // Helper function to safely handle array metadata
+        const formatArray = (value: any) => {
+            if (Array.isArray(value)) return value.join(', ');
+            if (typeof value === 'string') return value;
+            return 'None listed';
+        };
+        
+        // First try: Fetch directly by vector ID
+        try {
+            const fetchResult = await pineconeIndex.namespace('default').fetch([id]);
+            if (fetchResult.records && fetchResult.records[id]) {
+                const record = fetchResult.records[id];
+                const metadata = record.metadata;
+                
+                const context = `
+Prescription ID: ${id}
+Patient: ${metadata?.patientName || 'Unknown'}
+Date: ${metadata?.date || 'Unknown'}
+Doctor: ${metadata?.doctor || 'Unknown'}
+Allergies: ${formatArray(metadata?.allergies)}
+Medications: ${formatArray(metadata?.medications)}
+
+Full Details:
+${metadata?.text || 'No details available'}
+                `.trim();
+                
+                return `<results>${context}</results>`;
+            }
+        } catch (err) {
+            console.log('Direct fetch failed, trying metadata filter...');
+        }
+        
+        // Second try: Query by metadata filter
         const results = await pineconeIndex.namespace('default').query({
-            vector: Array(1024).fill(0), // Dummy vector since we're filtering by metadata
+            vector: Array(1024).fill(0),
             topK: 1,
             filter: {
                 prescriptionId: { $eq: id }
@@ -38,13 +71,6 @@ export async function searchPinecone(
         if (results.matches && results.matches.length > 0) {
             const match = results.matches[0];
             const metadata = match.metadata;
-            
-            // Helper function to safely handle array metadata
-            const formatArray = (value: any) => {
-                if (Array.isArray(value)) return value.join(', ');
-                if (typeof value === 'string') return value;
-                return 'None listed';
-            };
             
             const context = `
 Prescription ID: ${metadata?.prescriptionId || id}
