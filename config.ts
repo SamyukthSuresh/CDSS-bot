@@ -40,9 +40,17 @@ I'm your intelligent CDSS assistant. Here's what I can help you with:
 
 | 🔍 Patient Management | 💊 Prescription Creation | 📱 Patient Communication |
 |----------------------|--------------------------|---------------------------|
-| - Search existing patient records<br>- Track patient allergies and medical history<br>- Quick access to previous medications<br>- Upload patient EHRs for tailored prescriptions | - Evidence-based medication suggestions<br>- Automatic allergy conflict checking<br>- Professional markdown-formatted prescriptions<br>- Instant database storage for future reference | - Send prescription summaries via SMS (160 characters)<br>- Include prescription ID for easy reference |
+| - Search existing patient records<br><br>- Track patient allergies and medical history<br><br>- Quick access to previous medications<br><br>- Upload patient EHRs for tailored prescriptions | - Evidence-based medication suggestions<br><br>- Automatic allergy conflict checking<br><br>- Professional markdown-formatted prescriptions<br><br>- Instant database storage for future reference | - Send prescription summaries via SMS (160 characters)<br><br>- Include prescription ID for easy reference |
 
-**🔄 Quick Actions:** Type patient name to check their records • Describe symptoms to get medication recommendations • Say "new patient" to start a fresh prescription.
+---
+
+**🔄 Quick Actions:**
+
+- Type patient name to check their records
+- Describe symptoms to get medication recommendations  
+- Say "new patient" to start a fresh prescription
+
+---
 
 How can I assist you today?`;
 
