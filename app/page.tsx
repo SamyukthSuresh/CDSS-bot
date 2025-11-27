@@ -23,6 +23,7 @@ import { useEffect, useState, useRef } from "react";
 import { AI_NAME, CLEAR_CHAT_TEXT, OWNER_NAME, WELCOME_MESSAGE } from "@/config";
 import Image from "next/image";
 import Link from "next/link";
+import { PDFUploadButton } from "@/components/pdf-upload-button";
 
 const formSchema = z.object({
   message: z
@@ -136,6 +137,12 @@ export default function Chat() {
     toast.success("Chat cleared");
   }
 
+  function handlePDFExtracted(text: string, fileName: string) {
+    const summarizePrompt = `I have extracted text from a PDF file named "${fileName}". Please read the following content and provide a comprehensive summary:\n\n${text}`;
+    sendMessage({ text: summarizePrompt });
+    form.reset();
+  }
+
   return (
     <div className="flex h-screen items-center justify-center font-sans bg-gradient-healthcare dark:bg-gradient-healthcare-dark">
       <main className="w-full h-screen relative">
@@ -158,7 +165,11 @@ export default function Chat() {
                   <p className="text-xs text-muted-foreground">Clinical Decision Support</p>
                 </div>
               </ChatHeaderBlock>
-              <ChatHeaderBlock className="justify-end">
+              <ChatHeaderBlock className="justify-end gap-2">
+                <PDFUploadButton 
+                  onPDFExtracted={handlePDFExtracted}
+                  disabled={status === "streaming" || status === "submitted"}
+                />
                 <Button
                   variant="outline"
                   size="sm"
