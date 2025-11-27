@@ -1,5 +1,3 @@
-# MedSage CDSS-BOT
-
 # MedSage CDSS - Clinical Decision Support System
 
 A specialized AI-powered Clinical Decision Support System built with Next.js, designed to assist healthcare professionals with patient management, prescription creation, and patient communication. This application features intelligent patient record management, evidence-based medication suggestions, and secure SMS communication.
