@@ -34,7 +34,7 @@ export const AI_NAME = "MedSage CDSS";
 export const OWNER_NAME = "RSS";
 export const DOCUMENT_PATH = "public/Prescription.html"; 
 
-export const WELCOME_MESSAGE = `Hello!👋 Welcome to ${AI_NAME}!
+export const WELCOME_MESSAGE = `Hello!👋 Welcome to MedSage CDSS!
 I'm your intelligent CDSS assistant. Here's what I can help you with:
 
 **🔍 Patient Management:**
