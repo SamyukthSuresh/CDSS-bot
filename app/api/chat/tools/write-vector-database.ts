@@ -33,8 +33,17 @@ export const writeVectorDatabase = tool({
     
     try {
       const embeddingPromises = texts.map(async (item) => {
-        // Enhance text with patient name for better searchability
-        const enhancedText = `
+  // Convert medications from objects to strings
+  const medicationsStrings = item.metadata.medications 
+    ? item.metadata.medications.map((med: any) => {
+        if (typeof med === 'string') return med;
+        // Convert medication object to a readable string
+        return `${med.name || 'Unknown'} - ${med.dosage || ''} ${med.frequency || ''} ${med.duration || ''}`.trim();
+      })
+    : [];
+  
+  // Enhance text with patient name for better searchability
+  const enhancedText = `
 PRESCRIPTION FOR PATIENT ${item.metadata.patientName.toUpperCase()}
 Patient Name: ${item.metadata.patientName}
 Prescription ID: ${item.metadata.prescriptionId}
@@ -42,28 +51,30 @@ Date: ${item.metadata.date}
 Doctor: ${item.metadata.doctor}
 ${item.metadata.symptoms ? `Symptoms: ${item.metadata.symptoms}` : ''}
 Allergies: ${item.metadata.allergies.join(', ')}
+Medications: ${medicationsStrings.join(', ')}
 
 ${item.text}
 
 This prescription belongs to patient: ${item.metadata.patientName}
 Medical record for: ${item.metadata.patientName}
-        `.trim();
-        
-        const response = await openai.embeddings.create({
-          model: "text-embedding-3-small",
-          input: enhancedText,
-          dimensions: 1024,
-        });
-        
-        return {
-          id: item.id,
-          values: response.data[0].embedding,
-          metadata: { 
-            ...item.metadata, 
-            text: enhancedText  // Store the enhanced text in metadata
-          },
-        };
-      });
+  `.trim();
+  
+  const response = await openai.embeddings.create({
+    model: "text-embedding-3-small",
+    input: enhancedText,
+    dimensions: 1024,
+  });
+  
+  return {
+    id: item.id,
+    values: response.data[0].embedding,
+    metadata: { 
+      ...item.metadata,
+      medications: medicationsStrings, // Store as string array
+      text: enhancedText
+    },
+  };
+});
       
       const vectors = await Promise.all(embeddingPromises);
       
