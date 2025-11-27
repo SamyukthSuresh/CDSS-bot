@@ -13,14 +13,14 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { useChat } from "@ai-sdk/react";
-import { ArrowUp, Loader2, Plus, Square, Sparkles } from "lucide-react";
+import { ArrowUp, Loader2, Plus, Square, Sparkles, Search, Pill, MessageSquare, Zap } from "lucide-react";
 import { MessageWall } from "@/components/messages/message-wall";
 import { ChatHeader } from "@/app/parts/chat-header";
 import { ChatHeaderBlock } from "@/app/parts/chat-header";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { UIMessage } from "ai";
 import { useEffect, useState, useRef } from "react";
-import { AI_NAME, CLEAR_CHAT_TEXT, OWNER_NAME, WELCOME_MESSAGE } from "@/config";
+import { AI_NAME, CLEAR_CHAT_TEXT, OWNER_NAME } from "@/config";
 import Image from "next/image";
 import Link from "next/link";
 import { PDFUploadButton } from "@/components/pdf-upload-button";
@@ -66,10 +66,127 @@ const saveMessagesToStorage = (messages: UIMessage[], durations: Record<string, 
   }
 };
 
+// Welcome Message Component
+const WelcomeMessage = () => {
+  return (
+    <div className="max-w-4xl mx-auto mb-8">
+      {/* Header */}
+      <div className="mb-6 text-center">
+        <h1 className="text-2xl font-bold text-foreground mb-2">
+          Hello! 👋 Welcome to {AI_NAME}!
+        </h1>
+        <p className="text-muted-foreground">
+          I'm your intelligent CDSS assistant. Here's what I can help you with:
+        </p>
+      </div>
+
+      {/* Three Column Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        {/* Patient Management */}
+        <div className="bg-card/50 backdrop-blur-sm rounded-xl p-5 border border-border shadow-sm">
+          <div className="flex items-center gap-2 mb-4">
+            <Search className="w-5 h-5 text-blue-500" />
+            <h3 className="font-semibold text-foreground">Patient Management</h3>
+          </div>
+          <ul className="space-y-3 text-sm text-muted-foreground">
+            <li className="flex items-start gap-2">
+              <span className="text-blue-500 mt-0.5">•</span>
+              <span>Search existing patient records</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-blue-500 mt-0.5">•</span>
+              <span>Track patient allergies and medical history</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-blue-500 mt-0.5">•</span>
+              <span>Quick access to previous medications</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-blue-500 mt-0.5">•</span>
+              <span>Upload patient EHRs for tailored prescriptions</span>
+            </li>
+          </ul>
+        </div>
+
+        {/* Prescription Creation */}
+        <div className="bg-card/50 backdrop-blur-sm rounded-xl p-5 border border-border shadow-sm">
+          <div className="flex items-center gap-2 mb-4">
+            <Pill className="w-5 h-5 text-purple-500" />
+            <h3 className="font-semibold text-foreground">Prescription Creation</h3>
+          </div>
+          <ul className="space-y-3 text-sm text-muted-foreground">
+            <li className="flex items-start gap-2">
+              <span className="text-purple-500 mt-0.5">•</span>
+              <span>Evidence-based medication suggestions</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-purple-500 mt-0.5">•</span>
+              <span>Automatic allergy conflict checking</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-purple-500 mt-0.5">•</span>
+              <span>Professional markdown-formatted prescriptions</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-purple-500 mt-0.5">•</span>
+              <span>Instant database storage for future reference</span>
+            </li>
+          </ul>
+        </div>
+
+        {/* Patient Communication */}
+        <div className="bg-card/50 backdrop-blur-sm rounded-xl p-5 border border-border shadow-sm">
+          <div className="flex items-center gap-2 mb-4">
+            <MessageSquare className="w-5 h-5 text-green-500" />
+            <h3 className="font-semibold text-foreground">Patient Communication</h3>
+          </div>
+          <ul className="space-y-3 text-sm text-muted-foreground">
+            <li className="flex items-start gap-2">
+              <span className="text-green-500 mt-0.5">•</span>
+              <span>Send prescription summaries via SMS (160 characters)</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-green-500 mt-0.5">•</span>
+              <span>Include prescription ID for easy reference</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      {/* Quick Actions */}
+      <div className="bg-card/50 backdrop-blur-sm rounded-xl p-5 border border-border shadow-sm">
+        <div className="flex items-center gap-2 mb-4">
+          <Zap className="w-5 h-5 text-amber-500" />
+          <h3 className="font-semibold text-foreground">Quick Actions:</h3>
+        </div>
+        <ul className="space-y-2 text-sm text-muted-foreground">
+          <li className="flex items-start gap-2">
+            <span className="text-amber-500 mt-0.5">•</span>
+            <span>Type patient name to check their records</span>
+          </li>
+          <li className="flex items-start gap-2">
+            <span className="text-amber-500 mt-0.5">•</span>
+            <span>Describe symptoms to get medication recommendations</span>
+          </li>
+          <li className="flex items-start gap-2">
+            <span className="text-amber-500 mt-0.5">•</span>
+            <span>Say "new patient" to start a fresh prescription</span>
+          </li>
+        </ul>
+      </div>
+
+      {/* Footer */}
+      <div className="mt-6 text-center">
+        <p className="text-muted-foreground font-medium">How can I assist you today?</p>
+      </div>
+    </div>
+  );
+};
+
 export default function Chat() {
   const [isClient, setIsClient] = useState(false);
   const [durations, setDurations] = useState<Record<string, number>>({});
-  const welcomeMessageShownRef = useRef<boolean>(false);
+  const [showWelcome, setShowWelcome] = useState(false);
 
   const stored = typeof window !== 'undefined' ? loadMessagesFromStorage() : { messages: [], durations: {} };
   const [initialMessages] = useState<UIMessage[]>(stored.messages);
@@ -82,11 +199,20 @@ export default function Chat() {
     setIsClient(true);
     setDurations(stored.durations);
     setMessages(stored.messages);
+    
+    // Show welcome if no messages
+    if (stored.messages.length === 0) {
+      setShowWelcome(true);
+    }
   }, []);
 
   useEffect(() => {
     if (isClient) {
       saveMessagesToStorage(messages, durations);
+      // Hide welcome when messages are sent
+      if (messages.length > 0) {
+        setShowWelcome(false);
+      }
     }
   }, [durations, messages, isClient]);
 
@@ -97,24 +223,6 @@ export default function Chat() {
       return newDurations;
     });
   };
-
-  useEffect(() => {
-    if (isClient && initialMessages.length === 0 && !welcomeMessageShownRef.current) {
-      const welcomeMessage: UIMessage = {
-        id: `welcome-${Date.now()}`,
-        role: "assistant",
-        parts: [
-          {
-            type: "text",
-            text: WELCOME_MESSAGE,
-          },
-        ],
-      };
-      setMessages([welcomeMessage]);
-      saveMessagesToStorage([welcomeMessage], {});
-      welcomeMessageShownRef.current = true;
-    }
-  }, [isClient, initialMessages.length, setMessages]);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -133,6 +241,7 @@ export default function Chat() {
     const newDurations = {};
     setMessages(newMessages);
     setDurations(newDurations);
+    setShowWelcome(true);
     saveMessagesToStorage(newMessages, newDurations);
     toast.success("Chat cleared");
   }
@@ -166,10 +275,6 @@ export default function Chat() {
                 </div>
               </ChatHeaderBlock>
               <ChatHeaderBlock className="justify-end gap-2">
-                <PDFUploadButton 
-                  onPDFExtracted={handlePDFExtracted}
-                  disabled={status === "streaming" || status === "submitted"}
-                />
                 <Button
                   variant="outline"
                   size="sm"
@@ -187,6 +292,9 @@ export default function Chat() {
           <div className="flex flex-col items-center justify-end min-h-full">
             {isClient ? (
               <>
+                {showWelcome && messages.length === 0 && (
+                  <WelcomeMessage />
+                )}
                 <MessageWall messages={messages} status={status} durations={durations} onDurationChange={handleDurationChange} />
                 {status === "submitted" && (
                   <div className="flex justify-start max-w-3xl w-full mt-4">
@@ -221,44 +329,53 @@ export default function Chat() {
                         <FieldLabel htmlFor="chat-form-message" className="sr-only">
                           Message
                         </FieldLabel>
-                        <div className="relative">
-                          <div className="relative input-glow rounded-2xl bg-card/80 dark:bg-card/60 backdrop-blur-md transition-all duration-300">
-                            <Input
-                              {...field}
-                              id="chat-form-message"
-                              className="h-14 pr-14 pl-5 bg-transparent border-0 rounded-2xl text-base placeholder:text-muted-foreground/60 focus-visible:ring-0 focus-visible:ring-offset-0"
-                              placeholder="Ask me anything about patient care..."
-                              disabled={status === "streaming"}
-                              aria-invalid={fieldState.invalid}
-                              autoComplete="off"
-                              onKeyDown={(e) => {
-                                if (e.key === "Enter" && !e.shiftKey) {
-                                  e.preventDefault();
-                                  form.handleSubmit(onSubmit)();
-                                }
-                              }}
-                            />
-                            {(status == "ready" || status == "error") && (
-                              <Button
-                                className="absolute right-2 top-1/2 -translate-y-1/2 rounded-xl size-10 bg-primary hover:bg-primary/90 shadow-lg shadow-primary/25 transition-all duration-200 hover:scale-105 hover:shadow-xl hover:shadow-primary/30"
-                                type="submit"
-                                disabled={!field.value.trim()}
-                                size="icon"
-                              >
-                                <ArrowUp className="size-5" />
-                              </Button>
-                            )}
-                            {(status == "streaming" || status == "submitted") && (
-                              <Button
-                                className="absolute right-2 top-1/2 -translate-y-1/2 rounded-xl size-10 bg-destructive hover:bg-destructive/90 shadow-lg transition-all duration-200"
-                                size="icon"
-                                onClick={() => {
-                                  stop();
+                        <div className="relative flex items-center gap-2">
+                          {/* PDF Upload Button - Left Side */}
+                          <PDFUploadButton 
+                            onPDFExtracted={handlePDFExtracted}
+                            disabled={status === "streaming" || status === "submitted"}
+                          />
+                          
+                          {/* Chat Input Box */}
+                          <div className="relative flex-1">
+                            <div className="relative input-glow rounded-2xl bg-card/80 dark:bg-card/60 backdrop-blur-md transition-all duration-300">
+                              <Input
+                                {...field}
+                                id="chat-form-message"
+                                className="h-14 pr-14 pl-5 bg-transparent border-0 rounded-2xl text-base placeholder:text-muted-foreground/60 focus-visible:ring-0 focus-visible:ring-offset-0"
+                                placeholder="Ask me anything about patient care..."
+                                disabled={status === "streaming"}
+                                aria-invalid={fieldState.invalid}
+                                autoComplete="off"
+                                onKeyDown={(e) => {
+                                  if (e.key === "Enter" && !e.shiftKey) {
+                                    e.preventDefault();
+                                    form.handleSubmit(onSubmit)();
+                                  }
                                 }}
-                              >
-                                <Square className="size-4" />
-                              </Button>
-                            )}
+                              />
+                              {(status == "ready" || status == "error") && (
+                                <Button
+                                  className="absolute right-2 top-1/2 -translate-y-1/2 rounded-xl size-10 bg-primary hover:bg-primary/90 shadow-lg shadow-primary/25 transition-all duration-200 hover:scale-105 hover:shadow-xl hover:shadow-primary/30"
+                                  type="submit"
+                                  disabled={!field.value.trim()}
+                                  size="icon"
+                                >
+                                  <ArrowUp className="size-5" />
+                                </Button>
+                              )}
+                              {(status == "streaming" || status == "submitted") && (
+                                <Button
+                                  className="absolute right-2 top-1/2 -translate-y-1/2 rounded-xl size-10 bg-destructive hover:bg-destructive/90 shadow-lg transition-all duration-200"
+                                  size="icon"
+                                  onClick={() => {
+                                    stop();
+                                  }}
+                                >
+                                  <Square className="size-4" />
+                                </Button>
+                              )}
+                            </div>
                           </div>
                         </div>
                       </Field>
@@ -271,7 +388,7 @@ export default function Chat() {
           <div className="w-full px-4 py-3 items-center flex justify-center text-xs text-muted-foreground/70">
             <div className="flex items-center gap-1.5">
               <Sparkles className="size-3" />
-              <span>Patient data must remain strictly confidential and cannot be shared without the patient’s explicit consent.</span>
+              <span>Patient data must remain strictly confidential and cannot be shared without the patient's explicit consent.</span>
               <span className="mx-2">|</span>
               <span>&copy; {new Date().getFullYear()} {OWNER_NAME}</span>
               <span className="mx-2">|</span>
@@ -284,4 +401,4 @@ export default function Chat() {
       </main>
     </div>
   );
-}
+} 
