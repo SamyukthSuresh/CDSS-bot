@@ -1,246 +1,286 @@
-# CDSS-BOT
+# MedSage CDSS-BOT
 
-A customizable AI chatbot assistant built with Next.js, featuring web search capabilities, vector database integration, and content moderation. This repository provides a complete foundation for deploying your own AI assistant with minimal technical knowledge required.
+# MedSage CDSS - Clinical Decision Support System
+
+A specialized AI-powered Clinical Decision Support System built with Next.js, designed to assist healthcare professionals with patient management, prescription creation, and patient communication. This application features intelligent patient record management, evidence-based medication suggestions, and secure SMS communication.
+
+![MedSage CDSS Interface](screenshot.png)
 
 ## Overview
 
-MyAI3 is an AI-powered chatbot that can:
+MedSage CDSS is a healthcare-focused AI assistant that can:
 
-- Answer questions using advanced language models
-- Search the web for up-to-date information
-- Search a vector database (Pinecone) for stored knowledge
-- Moderate content to ensure safe interactions
-- Provide citations and sources for its responses
+- **Manage patient records** - Search existing patients, track allergies and medical history
+- **Create prescriptions** - Generate evidence-based medication recommendations with automatic allergy checking
+- **Communicate with patients** - Send prescription summaries via SMS (160 characters)
+- **Process medical documents** - Upload and analyze patient EHRs for tailored prescriptions
+- **Provide clinical guidance** - Offer medication recommendations based on symptoms
 
-The application is designed to be easily customizable without deep technical expertise. Most changes you'll want to make can be done in just two files: `config.ts` and `prompts.ts`.
+The application is designed for healthcare professionals and maintains strict patient data confidentiality throughout all interactions.
 
-This application is deployed on Vercel. After making changes to `config.ts` or `prompts.ts`, commit and push your changes to trigger a new deployment.
+## Key Features
 
-## Key Files to Customize
+### 🔍 Patient Management
+- Search existing patient records by name
+- Track patient allergies and comprehensive medical history
+- Quick access to previous medications and prescriptions
+- Upload patient EHRs (PDF format) for context-aware prescriptions
 
-### `config.ts` - Application Configuration
+### 💊 Prescription Creation
+- Evidence-based medication suggestions
+- Automatic allergy conflict checking
+- Professional markdown-formatted prescriptions
+- Instant database storage for future reference
+- Prescription ID generation for easy tracking
 
-This is the **primary file** you'll edit to customize your AI assistant. Located in the root directory, it contains:
+### 📱 Patient Communication
+- Send prescription summaries via SMS (160 character limit)
+- Include prescription ID in messages for easy reference
+- Twilio integration for secure messaging
+- **Note**: SMS can only be sent to whitelisted Twilio numbers
 
-- **AI Identity**: `AI_NAME` and `OWNER_NAME` - Change these to personalize your assistant
-- **Welcome Message**: `WELCOME_MESSAGE` - The greeting users see when they first open the chat
-- **UI Text**: `CLEAR_CHAT_TEXT` - The label for the "New Chat" button
-- **Moderation Messages**: Custom messages shown when content is flagged (sexual content, harassment, hate speech, violence, self-harm, illegal activities)
-- **Model Configuration**: `MODEL` - The AI model being used (currently set to OpenAI's GPT-5-mini)
-- **Vector Database Settings**: `PINECONE_TOP_K` and `PINECONE_INDEX_NAME` - Settings for your knowledge base search
+### 🎥 Tutorial & Support
+- Quick reference video tutorial available in the interface
+- Step-by-step guidance for new users
+- Comprehensive documentation
 
-**Example customization:**
+## Quick Start
 
-```typescript
-export const AI_NAME = "Your Assistant Name";
-export const OWNER_NAME = "Your Name";
-export const WELCOME_MESSAGE = `Hello! I'm ${AI_NAME}, ready to help you.`;
-```
+### Watch the Tutorial
+A comprehensive tutorial video is available directly in the application interface. Click "Watch tutorial" in the header to get started.
 
-### `prompts.ts` - AI Behavior and Instructions
-
-This file controls **how your AI assistant behaves and responds**. Located in the root directory, it contains:
-
-- **Identity Prompt**: Who the AI is and who created it
-- **Tool Calling Prompt**: Instructions for when to search the web or database
-- **Tone & Style**: How the AI should communicate (friendly, helpful, educational)
-- **Guardrails**: What the AI should refuse to discuss
-- **Citation Rules**: How to cite sources in responses
-- **Course Context**: Domain-specific instructions (currently mentions course syllabus)
-
-The prompts are modular, so you can edit individual sections without affecting others. The `SYSTEM_PROMPT` combines all these sections.
-
-**Example customization:**
-
-```typescript
-export const TONE_STYLE_PROMPT = `
-- Maintain a professional, business-focused tone.
-- Use clear, concise language suitable for executives.
-- Provide actionable insights and recommendations.
-`;
-```
+### Quick Actions
+1. **Check patient records**: Type a patient's name
+2. **Get medication recommendations**: Describe symptoms
+3. **Start new prescription**: Say "new patient"
+4. **Upload medical records**: Click the PDF upload button
 
 ## Project Structure
 
 ```text
-myAI3/
+medsage-cdss/
 ├── app/                          # Next.js application files
 │   ├── api/chat/                 # Chat API endpoint
-│   │   ├── route.ts              # Main chat handler
-│   │   └── tools/                 # AI tools (web search, vector search)
+│   │   ├── route.ts              # Main chat handler with medical tools
+│   │   └── tools/                 # AI tools (patient search, prescription creation)
 │   ├── page.tsx                  # Main chat interface (UI)
-│   ├── parts/                    # UI components
+│   ├── parts/                    # UI components (chat header)
 │   └── terms/                    # Terms of Use page
 ├── components/                    # React components
-│   ├── ai-elements/              # AI-specific UI components
 │   ├── messages/                 # Message display components
+│   ├── pdf-upload-button.tsx    # PDF upload functionality
 │   └── ui/                       # Reusable UI components
 ├── lib/                          # Utility libraries
 │   ├── moderation.ts             # Content moderation logic
-│   ├── pinecone.ts               # Vector database integration
-│   ├── sources.ts                # Source/citation handling
+│   ├── database.ts               # Patient record management
+│   ├── sms.ts                    # Twilio SMS integration
 │   └── utils.ts                  # General utilities
-├── types/                        # TypeScript type definitions
 ├── config.ts                     # ⭐ MAIN CONFIGURATION FILE
 ├── prompts.ts                    # ⭐ AI BEHAVIOR CONFIGURATION
 └── package.json                  # Dependencies and scripts
 ```
 
-## Important Files Explained
+## Configuration Files
 
-### Core Application Files
+### `config.ts` - Application Configuration
 
-- **`app/api/chat/route.ts`**: The main API endpoint that handles chat requests. It processes messages, checks moderation, and calls the AI model with tools.
+This is the **primary file** you'll edit to customize MedSage CDSS. Located in the root directory, it contains:
 
-- **`app/page.tsx`**: The main user interface. This is what users see and interact with. It handles the chat interface, message display, and user input.
+- **AI Identity**: `AI_NAME` (currently "MedSage CDSS") and `OWNER_NAME`
+- **UI Text**: `CLEAR_CHAT_TEXT` - Label for the "New" button
+- **Model Configuration**: `MODEL` - The AI model being used (OpenAI GPT-4 or GPT-5)
+- **Medical Settings**: Configuration for prescription format, database connections
 
-- **`app/api/chat/tools/web-search.ts`**: Enables the AI to search the web using Exa API. You can modify search parameters here (currently returns 3 results).
+**Example customization:**
 
-- **`app/api/chat/tools/search-vector-database.ts`**: Enables the AI to search your Pinecone vector database for stored knowledge.
+```typescript
+export const AI_NAME = "Your Medical AI Assistant";
+export const OWNER_NAME = "Your Medical Practice";
+export const CLEAR_CHAT_TEXT = "New Patient";
+```
 
-### UI Components
+### `prompts.ts` - AI Behavior and Instructions
 
-- **`components/messages/message-wall.tsx`**: Displays the conversation history
-- **`components/messages/assistant-message.tsx`**: Renders AI responses, including tool calls and reasoning
-- **`components/messages/tool-call.tsx`**: Shows when the AI is using tools (searching web, etc.)
-- **`components/ai-elements/response.tsx`**: Formats and displays AI text responses with markdown support
+This file controls **how the medical AI assistant behaves and responds**. Located in the root directory, it contains:
 
-### Library Files
+- **Clinical Identity**: Medical professional persona and expertise
+- **Tool Usage**: When to search patient records, create prescriptions, send SMS
+- **Medical Tone**: Professional, empathetic, evidence-based communication
+- **Safety Guidelines**: HIPAA compliance, patient confidentiality rules
+- **Prescription Format**: How to structure medication recommendations
+- **Clinical Guardrails**: What the AI should refuse or escalate
 
-- **`lib/moderation.ts`**: Handles content moderation using OpenAI's moderation API. Checks user messages for inappropriate content before processing.
+**Example customization:**
 
-- **`lib/pinecone.ts`**: Manages connections to Pinecone vector database. Handles searching your knowledge base.
+```typescript
+export const TONE_STYLE_PROMPT = `
+- Maintain a professional, compassionate medical tone
+- Use clear language appropriate for healthcare settings
+- Always prioritize patient safety and evidence-based practice
+- Respect patient confidentiality and HIPAA regulations
+`;
+```
 
-- **`lib/sources.ts`**: Processes search results and formats them for the AI, including citation handling.
+## Environment Setup
 
-### Configuration Files
+Configure environment variables in your deployment platform (Vercel recommended). Add the following:
 
-- **`env.template`**: Template for environment variables. These need to be configured in your Vercel project settings.
+### Required Variables
+- `OPENAI_API_KEY` - Required for AI model functionality
+- `DATABASE_URL` - Connection string for patient records database
 
-- **`app/terms/page.tsx`**: Terms of Use page. Uses `OWNER_NAME` from `config.ts`. Update this file if you need to modify legal terms.
-
-## Environment Setup (Vercel)
-
-Configure environment variables in your Vercel project settings (Settings → Environment Variables). Add the following:
-
-- `OPENAI_API_KEY` - Required for AI model and moderation
-- `EXA_API_KEY` - Optional, for web search functionality
-- `PINECONE_API_KEY` - Optional, for vector database search
+### Optional Variables
+- `TWILIO_ACCOUNT_SID` - For SMS functionality
+- `TWILIO_AUTH_TOKEN` - For SMS functionality
+- `TWILIO_PHONE_NUMBER` - Your Twilio phone number
 
 **Where to get API keys:**
 
-- **OpenAI**: <https://platform.openai.com/api-keys> (required)
-- **Exa**: <https://dashboard.exa.ai/> (optional)
-- **Pinecone**: <https://app.pinecone.io/> (optional)
+- **OpenAI**: https://platform.openai.com/api-keys
+- **Twilio**: https://www.twilio.com/console
+- **Database**: Your database provider (PostgreSQL, MySQL, etc.)
 
-**Note**: Only `OPENAI_API_KEY` is strictly required. The others enable additional features.
+**Important Notes**:
+- SMS functionality requires whitelisted Twilio numbers for recipients
+- OpenAI API may occasionally timeout - users should wait or re-enter prompts
+- Patient data must remain strictly confidential per HIPAA guidelines
 
-## Customization Guide
+## Key Features in Detail
 
-### Changing the AI's Name and Identity
+### Patient Record Management
 
-1. Open `config.ts`
-2. Modify `AI_NAME` and `OWNER_NAME`
-3. Update `WELCOME_MESSAGE` if desired
-4. Commit and push changes to trigger a new Vercel deployment
+The system maintains a comprehensive database of patient information:
+- Patient demographics and contact information
+- Allergy records with severity levels
+- Medical history and previous diagnoses
+- Prescription history with medication details
+- EHR document storage and retrieval
 
-### Adjusting AI Behavior
+### Prescription Creation Workflow
 
-1. Open `prompts.ts`
-2. Edit the relevant prompt section:
-   - `TONE_STYLE_PROMPT` - Change communication style
-   - `GUARDRAILS_PROMPT` - Modify safety rules
-   - `TOOL_CALLING_PROMPT` - Adjust when tools are used
-   - `CITATIONS_PROMPT` - Change citation format
-3. Commit and push changes to trigger a new Vercel deployment
+1. Search or create patient record
+2. Review patient allergies and medical history
+3. Describe symptoms or condition
+4. AI suggests evidence-based medications
+5. System checks for allergy conflicts
+6. Generate formatted prescription
+7. Store in database with unique prescription ID
+8. Optional: Send SMS summary to patient
 
-### Customizing Moderation Messages
+### SMS Communication
 
-1. Open `config.ts`
-2. Find the `MODERATION_DENIAL_MESSAGE_*` constants
-3. Update the messages to match your brand voice
-4. These messages appear when content is flagged
+- Messages limited to 160 characters
+- Includes prescription ID for reference
+- Only works with whitelisted Twilio numbers
+- Maintains HIPAA compliance standards
 
-### Changing the AI Model
+## Medical Compliance & Safety
 
-1. Open `config.ts`
-2. Modify the `MODEL` export (line 4)
-3. Available models depend on your AI SDK provider
-4. Update API keys in `.env.local` if switching providers
+### Data Privacy
+- All patient data remains strictly confidential
+- Cannot be shared without explicit patient consent
+- Complies with HIPAA regulations
+- Secure database storage with encryption
 
-### Adding or Removing Tools
+### Clinical Guidelines
+- Evidence-based medication recommendations
+- Automatic allergy and drug interaction checking
+- Professional prescription formatting
+- Clear documentation for legal compliance
 
-Tools are located in `app/api/chat/tools/`. To add a new tool:
-
-1. Create a new file in `app/api/chat/tools/`
-2. Import and add it to `app/api/chat/route.ts` in the `tools` object
-3. Add UI display logic in `components/messages/tool-call.tsx`
-4. See `AGENTS.md` for more technical details
-
-## Architecture Overview
-
-The application follows a simple request-response flow:
-
-1. **User sends message** → `app/page.tsx` (UI)
-2. **Message sent to API** → `app/api/chat/route.ts`
-3. **Content moderation check** → `lib/moderation.ts`
-4. **AI processes with tools** → Model uses web search and/or vector search as needed
-5. **Response streamed back** → UI displays response in real-time
-
-The AI can autonomously decide to:
-
-- Answer directly
-- Search the web for current information
-- Search your vector database for stored knowledge
-- Combine multiple sources
-
-All responses include citations when sources are used.
+### User Responsibilities
+- Healthcare professionals must verify all AI suggestions
+- Final prescription decisions rest with licensed practitioners
+- AI serves as decision support, not replacement for clinical judgment
+- Regular review of patient data accuracy
 
 ## Troubleshooting
 
-### AI not responding
+### AI Not Responding
+- Verify `OPENAI_API_KEY` is set correctly
+- Check API quota and credits
+- Wait 30-60 seconds for OpenAI timeout recovery
+- Re-enter the prompt if necessary
 
-- Verify `OPENAI_API_KEY` is set correctly in Vercel environment variables
+### SMS Not Sending
+- Verify Twilio credentials are configured
+- Ensure recipient number is whitelisted in Twilio
+- Check Twilio console for error messages
+- Verify Twilio account has sufficient credits
+
+### PDF Upload Issues
+- Ensure PDF is under size limit (typically 10MB)
+- Verify PDF contains readable text (not scanned images)
 - Check browser console for error messages
-- Ensure the API key has sufficient credits/quota
-- Check Vercel deployment logs for errors
 
-### Web search not working
+### Database Connection Issues
+- Verify `DATABASE_URL` is correct
+- Ensure database is accessible from deployment server
+- Check database logs for connection errors
+- Verify database tables are properly migrated
 
-- Verify `EXA_API_KEY` is set in Vercel environment variables
-- Check Exa API dashboard for usage limits
-- Tool will gracefully fail if API key is missing
+## Deployment
 
-### Vector search not working
+### Vercel (Recommended)
 
-- Verify `PINECONE_API_KEY` is set in Vercel environment variables
-- Check that `PINECONE_INDEX_NAME` in `config.ts` matches your Pinecone index
-- Ensure your Pinecone index exists and has data
+1. Fork or clone this repository
+2. Connect to Vercel
+3. Configure environment variables in Vercel dashboard
+4. Deploy
 
-### Deployment issues
+After making changes to `config.ts` or `prompts.ts`, commit and push to trigger automatic redeployment.
 
-- Check Vercel deployment logs for build errors
-- Verify all environment variables are set in Vercel project settings
-- Ensure your Vercel project is connected to the correct Git repository
+### Other Platforms
 
-## Next Steps
+The application can be deployed to any platform supporting Next.js:
+- AWS Amplify
+- Netlify
+- Railway
+- Self-hosted with Node.js
 
-1. **Customize branding**: Update `config.ts` with your name and AI assistant name
+## Customization Guide
 
-2. **Adjust prompts**: Modify `prompts.ts` to match your use case and tone
+### Changing Branding
+1. Update `AI_NAME` in `config.ts`
+2. Replace logo files in `/public/logo.png` and `/public/logo.jpg`
+3. Modify color schemes in Tailwind configuration
+4. Update favicon and metadata
 
-3. **Set up knowledge base**: Configure Pinecone and upload your documents
+### Adjusting Clinical Behavior
+1. Edit `prompts.ts` to modify clinical tone and guidelines
+2. Update medication recommendation criteria
+3. Adjust allergy checking sensitivity
+4. Modify prescription format templates
 
-4. **Test moderation**: Verify moderation messages match your needs
+### Adding Medical Tools
+1. Create tool file in `app/api/chat/tools/`
+2. Implement tool logic (e.g., drug interaction checking)
+3. Register tool in `route.ts`
+4. Update UI to display tool usage
 
-5. **Deploy**: Build and deploy to your hosting platform (Vercel, AWS, etc.)
+## Important Limitations
 
-## Support
+⚠️ **Medical Disclaimer**: This system is a clinical decision support tool and should not replace professional medical judgment. All AI-generated recommendations must be reviewed and approved by licensed healthcare professionals.
 
-For technical questions about tool integration, see `AGENTS.md`.
+⚠️ **SMS Restrictions**: Patient communication via SMS is limited to whitelisted Twilio numbers. Contact the system administrator to add authorized numbers.
 
-For deployment issues, check the Vercel deployment logs and browser console for error messages.
+⚠️ **API Timeouts**: The OpenAI API may occasionally timeout. Users should wait briefly or re-enter prompts if the model doesn't respond.
+
+⚠️ **Data Confidentiality**: Patient data must remain strictly confidential and cannot be shared without the patient's explicit consent per HIPAA regulations.
+
+## Support & Documentation
+
+- **Tutorial Video**: Access via "Watch tutorial" link in the application header
+- **Terms of Use**: Available at `/terms` endpoint
+- **Technical Support**: Contact system administrator
+- **HIPAA Compliance Questions**: Consult your organization's compliance officer
+
+## License
+
+Copyright © 2025 RSS (or your organization name)
+
+All patient data and medical information handled by this system is subject to HIPAA regulations and organizational data privacy policies.
 
 ---
 
-**Remember**: Most customization happens in `config.ts` and `prompts.ts`. Start there!
+**For Healthcare Professionals**: This tool is designed to enhance clinical decision-making, not replace it. Always verify AI recommendations against current medical guidelines and patient-specific factors.
