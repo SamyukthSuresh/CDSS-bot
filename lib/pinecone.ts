@@ -38,7 +38,7 @@ export async function searchPinecone(
         fields: ['text', 'pre_context', 'post_context', 'source_url', 'source_description', 'source_type', 'order'],
     });
     
-    console.log('Search returned', results.length, 'results');
+    console.log('Search completed');
     
     const chunks = searchResultsToChunks(results);
     const sources = getSourcesFromChunks(chunks);
@@ -68,32 +68,4 @@ Patient Name: ${patientName}
 
 ${prescriptionText}
 
-This prescription belongs to patient: ${patientName}
-Medical record for: ${patientName}
-        `.trim();
-        
-        console.log('Upserting prescription for:', patientName);
-        
-        // Use upsertRecords with inference API
-        const result = await pineconeIndex.namespace('default').upsertRecords({
-            records: [
-                {
-                    id: prescriptionId,
-                    text: enhancedText,
-                    metadata: {
-                        ...metadata,
-                        patientName: patientName,
-                        source_type: 'prescription',
-                        source_description: `Prescription for ${patientName}`,
-                    },
-                },
-            ],
-        });
-        
-        console.log('Upsert successful:', result);
-        return result;
-    } catch (error) {
-        console.error('Upsert failed:', error);
-        throw error;
-    }
-}
+This prescription belongs to patient: ${p
