@@ -34,7 +34,7 @@ export const AI_NAME = "MedSage CDSS";
 export const OWNER_NAME = "RSS";
 export const DOCUMENT_PATH = "public/Prescription.html"; 
 
-export const WELCOME_MESSAGE = ``Hello! 👋 Welcome to ${AI_NAME}!
+export const WELCOME_MESSAGE = `Hello! 👋 Welcome to ${AI_NAME}!
 
 I'm your intelligent CDSS assistant. Here's what I can help you with:
 
@@ -44,7 +44,7 @@ I'm your intelligent CDSS assistant. Here's what I can help you with:
 
 **🔄 Quick Actions:** Type patient name to check their records • Describe symptoms to get medication recommendations • Say "new patient" to start a fresh prescription.
 
-How can I assist you today?``;
+How can I assist you today?`;
 
 export const CLEAR_CHAT_TEXT = "New";
 
