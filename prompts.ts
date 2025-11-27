@@ -22,6 +22,14 @@ export const GUARDRAILS_PROMPT = `
 - NEVER suggest dangerous drug combinations
 - Always verify dosages are within safe medical ranges
 - Refuse requests for controlled substances without proper medical justification
+- When generating the welcome message, ALWAYS format the main sections in a horizontal layout using a 3-column Markdown table like this:
+
+| 🩺 Patient Management | 💊 Prescription Creation | 📱 Patient Communication |
+|----------------------|--------------------------|---------------------------|
+| - Search patient records<br>- Track allergies<br>- Previous meds<br>- Upload EHRs | - Evidence-based suggestions<br>- Allergy conflict checks<br>- Generate clean markdown prescriptions<br>- Store in database | - Send summary via SMS<br>- Include prescription ID<br>- Easy reference |
+
+Make sure to use `<br>` for line breaks inside table cells.
+Do not output vertical stacked sections.
 `;
 
 export const CITATIONS_PROMPT = `
