@@ -1,5 +1,5 @@
 import { ToolCallPart, ToolResultPart } from "ai";
-import { Book, Globe, Search, Presentation, Wrench } from "lucide-react";
+import { Book, Globe, Search, Presentation, Wrench, CheckCircle2 } from "lucide-react";
 import { Shimmer } from "../ai-elements/shimmer";
 
 export interface ToolDisplay {
@@ -75,17 +75,19 @@ export function ToolCall({ part }: { part: ToolCallPart }) {
     const formattedArgs = formatToolArguments(toolName || "", input, toolDisplay);
 
     return (
-        <div className="flex items-center gap-2">
-            <div className="flex items-center gap-2 text-muted-foreground shrink-0">
-                {toolDisplay.call_icon}
-                <Shimmer duration={1}>{toolDisplay.call_label}</Shimmer>
+        <div className="flex items-center gap-3 px-4 py-3 bg-primary/5 dark:bg-primary/10 rounded-xl border border-primary/10 animate-fade-in">
+            <div className="flex items-center gap-2.5 text-primary shrink-0">
+                <div className="p-1.5 bg-primary/10 rounded-lg">
+                    {toolDisplay.call_icon}
+                </div>
+                <Shimmer duration={1} className="font-medium text-sm">{toolDisplay.call_label}</Shimmer>
             </div>
             {toolDisplay.formatArgs && formattedArgs && (
-                <span className="text-muted-foreground/75 flex-1 min-w-0 truncate">
+                <span className="text-muted-foreground text-sm flex-1 min-w-0 truncate">
                     {formattedArgs}
                 </span>
             )}
-        </div >
+        </div>
     );
 }
 
@@ -98,16 +100,18 @@ export function ToolResult({ part }: { part: ToolResultPart }) {
     const formattedArgs = input !== undefined ? formatToolArguments(toolName || "", input, toolDisplay) : "";
 
     return (
-        <div className="flex items-center gap-2">
-            <div className="flex items-center gap-2 text-muted-foreground shrink-0">
-                {toolDisplay.result_icon}
-                <span>{toolDisplay.result_label}</span>
+        <div className="flex items-center gap-3 px-4 py-3 bg-green-500/5 dark:bg-green-500/10 rounded-xl border border-green-500/20 animate-fade-in">
+            <div className="flex items-center gap-2.5 text-green-600 dark:text-green-500 shrink-0">
+                <div className="p-1.5 bg-green-500/10 rounded-lg">
+                    <CheckCircle2 className="w-4 h-4" />
+                </div>
+                <span className="font-medium text-sm">{toolDisplay.result_label}</span>
             </div>
             {toolDisplay.formatArgs && formattedArgs && (
-                <span className="text-muted-foreground/75 flex-1 min-w-0 truncate">
+                <span className="text-muted-foreground text-sm flex-1 min-w-0 truncate">
                     {formattedArgs}
                 </span>
             )}
         </div>
     );
-}   
+}

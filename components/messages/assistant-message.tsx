@@ -5,15 +5,19 @@ import { ToolCall, ToolResult } from "./tool-call";
 
 export function AssistantMessage({ message, status, isLastMessage, durations, onDurationChange }: { message: UIMessage; status?: string; isLastMessage?: boolean; durations?: Record<string, number>; onDurationChange?: (key: string, duration: number) => void }) {
     return (
-        <div className="w-full">
-            <div className="text-sm flex flex-col gap-4">
+        <div className="w-full animate-fade-in">
+            <div className="text-sm flex flex-col gap-4 leading-relaxed">
                 {message.parts.map((part, i) => {
                     const isStreaming = status === "streaming" && isLastMessage && i === message.parts.length - 1;
                     const durationKey = `${message.id}-${i}`;
                     const duration = durations?.[durationKey];
 
                     if (part.type === "text") {
-                        return <Response key={`${message.id}-${i}`}>{part.text}</Response>;
+                        return (
+                            <div key={`${message.id}-${i}`} className="bg-card/60 dark:bg-card/40 backdrop-blur-sm rounded-2xl rounded-bl-md px-5 py-4 message-card border border-border/50 transition-all duration-200 hover:border-primary/20">
+                                <Response>{part.text}</Response>
+                            </div>
+                        );
                     } else if (part.type === "reasoning") {
                         return (
                             <ReasoningPart

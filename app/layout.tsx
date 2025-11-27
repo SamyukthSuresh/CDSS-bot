@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Geist_Mono } from "next/font/google";
+import { Toaster } from "sonner";
 import "./globals.css";
 
 const inter = Inter({
@@ -13,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "MyAI3",
-  description: "MyAI3",
+  title: "CDSS-BOT | Clinical Decision Support",
+  description: "Intelligent Clinical Decision Support System for healthcare professionals",
 };
 
 export default function RootLayout({
@@ -28,6 +29,16 @@ export default function RootLayout({
         className={`${inter.variable} ${geistMono.variable} antialiased`}
       >
         {children}
+        <Toaster 
+          position="top-center" 
+          richColors 
+          closeButton
+          toastOptions={{
+            style: {
+              borderRadius: '12px',
+            },
+          }}
+        />
       </body>
     </html>
   );
