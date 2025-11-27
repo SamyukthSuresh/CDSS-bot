@@ -1,20 +1,6 @@
-import { Pinecone } from '@pinecone-database/pinecone';
-import { PINECONE_TOP_K } from '@/config';
-import { searchResultsToChunks, getSourcesFromChunks, getContextFromSources } from '@/lib/sources';
-import { PINECONE_INDEX_NAME } from '@/config';
-
-if (!process.env.PINECONE_API_KEY) {
-    throw new Error('PINECONE_API_KEY is not set');
-}
-
-export const pinecone = new Pinecone({
-    apiKey: process.env.PINECONE_API_KEY,
-});
-
-export const pineconeIndex = pinecone.Index(PINECONE_INDEX_NAME);
-
 export async function searchPinecone(
     query: string,
+    prescriptionId?: string
 ): Promise<string> {
     // Enhance query if it looks like a patient name
     const namePattern = /^[A-Z][a-z]+(?: [A-Z][a-z]+){1,2}$/;
@@ -28,7 +14,8 @@ export async function searchPinecone(
     
     console.log('Searching Pinecone with query:', enhancedQuery);
     
-    const results = await pineconeIndex.namespace('default').searchRecords({
+    // Build search params object
+    const searchParams: any = {
         query: {
             inputs: {
                 text: enhancedQuery,
@@ -36,7 +23,16 @@ export async function searchPinecone(
             topK: PINECONE_TOP_K,
         },
         fields: ['text', 'pre_context', 'post_context', 'source_url', 'source_description', 'source_type', 'order'],
-    });
+    };
+    
+    // Add filter if prescriptionId is provided
+    if (prescriptionId) {
+        searchParams.filter = {
+            prescriptionId: { $eq: prescriptionId }
+        };
+    }
+    
+    const results = await pineconeIndex.namespace('default').searchRecords(searchParams);
     
     console.log('Search completed');
     
