@@ -30,7 +30,7 @@ function getDateAndTime(): string {
 
 export const DATE_AND_TIME = getDateAndTime();
 
-export const AI_NAME = "CDSS-BOT";
+export const AI_NAME = "MedSage CDSS";
 export const OWNER_NAME = "RSS";
 export const DOCUMENT_PATH = "public/Prescription.html"; 
 
