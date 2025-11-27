@@ -70,16 +70,6 @@ const saveMessagesToStorage = (messages: UIMessage[], durations: Record<string, 
 const WelcomeMessage = () => {
   return (
     <div className="max-w-4xl mx-auto mb-8">
-      {/* Header */}
-      <div className="mb-6 text-center">
-        <h1 className="text-2xl font-bold text-foreground mb-2">
-          Hello! 👋 Welcome to {AI_NAME}!
-        </h1>
-        <p className="text-muted-foreground">
-          I'm your intelligent CDSS assistant. Here's what I can help you with:
-        </p>
-      </div>
-
       {/* Three Column Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
         {/* Patient Management */}
