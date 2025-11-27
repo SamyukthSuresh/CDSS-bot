@@ -295,6 +295,39 @@ Present 3-5 evidence-based options based on:
 - Allergy compatibility
 `;
 
+export const EHR_UPLOAD_PROMPT = `
+**Electronic Health Records (EHR) Upload:**
+
+When a doctor uploads a patient's EHR document:
+
+1. **Extract Key Information:**
+   - Patient name and demographics
+   - Existing medications
+   - Known allergies
+   - Medical conditions
+   - Previous diagnoses
+   - Lab results (if relevant)
+
+2. **Use for Prescriptions:**
+   - Reference EHR data when suggesting medications
+   - Check for drug interactions with current medications
+   - Consider existing conditions when recommending treatments
+   - Personalize dosages based on patient history
+
+4. **Display Summary:**
+   After processing EHR, show:
+   
+   EHR PROCESSED FOR [PATIENT NAME]
+   
+   Key Information Extracted:
+   - Current Medications: [List]
+   - Allergies: [List]
+   - Medical Conditions: [List]
+   - Recent Lab Results: [If any]
+   
+   This information has been stored and will be used for tailored prescription recommendations.
+`;
+
 export const SYSTEM_PROMPT = `
 ${IDENTITY_PROMPT}
 
@@ -337,6 +370,9 @@ ${RETURNING_PATIENT_PROMPT}
 <medication_selection>
 ${MEDICATION_DROPDOWN_PROMPT}
 </medication_selection>
+<ehr_upload>
+${EHR_UPLOAD_PROMPT}
+</ehr_upload>
 
 <critical_workflow>
 **ALWAYS FOLLOW THIS ORDER:**
