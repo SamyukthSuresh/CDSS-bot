@@ -47,7 +47,7 @@ I'm your intelligent CDSS assistant. Here's what I can help you with:
 **🔄 Quick Actions:**
 
 - Type patient name to check their records
-- Describe symptoms to get medication recommendations  
+- Describe symptoms to get medication recommendations
 - Say "new patient" to start a fresh prescription
 
 ---
