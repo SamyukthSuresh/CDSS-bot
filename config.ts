@@ -41,6 +41,7 @@ I'm your intelligent CDSS assistant. Here's what I can help you with:
 - Search existing patient records and prescription history
 - Track patient allergies and medical history
 - Quick access to previous medications
+- Upload patient EHRs to ensure prescriptions are tailored to their medical history.
 
 **💊 Prescription Creation:**
 - Evidence-based medication suggestions
