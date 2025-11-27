@@ -271,21 +271,21 @@ export default function Chat() {
                 <div className="flex flex-col">
                   <p className="font-semibold text-foreground tracking-tight text-base">{AI_NAME}</p>
                   <p className="text-xs text-muted-foreground">Clinical Decision Support</p>
-                  {/* Video Reference Link */}
-                  <Link 
-                    href="https://drive.google.com/file/d/1ngLDR7yK5mK68lNSeQY_B2qCAhNA_oiT/view?usp=sharing"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-1.5 text-xs text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors duration-200 group mt-1"
-                  >
-                    <svg className="w-3.5 h-3.5 group-hover:scale-110 transition-transform duration-200" fill="currentColor" viewBox="0 0 20 20">
-                      <path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z" />
-                    </svg>
-                    <span className="underline">Watch tutorial</span>
-                  </Link>
                 </div>
               </ChatHeaderBlock>
               <ChatHeaderBlock className="justify-end gap-2">
+                {/* Video Reference Link */}
+                <Link 
+                  href="https://drive.google.com/file/d/1ngLDR7yK5mK68lNSeQY_B2qCAhNA_oiT/view?usp=sharing"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1.5 text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors duration-200 group"
+                >
+                  <svg className="w-4 h-4 group-hover:scale-110 transition-transform duration-200" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z" />
+                  </svg>
+                  <span className="underline">Watch tutorial</span>
+                </Link>
                 <Button
                   variant="outline"
                   size="sm"
