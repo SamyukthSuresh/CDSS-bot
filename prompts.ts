@@ -42,7 +42,7 @@ When the user sends their FIRST message in a new conversation, respond with:
 - Store everything in the database
 
 What would you like to do? You can:
-- Tell me a patient name to check their records
+- Tell me a patient prescription id to check their records
 - Describe symptoms for medication suggestions
 - Say "new patient [name]" to start a prescription"
 
