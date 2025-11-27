@@ -34,31 +34,17 @@ export const AI_NAME = "MedSage CDSS";
 export const OWNER_NAME = "RSS";
 export const DOCUMENT_PATH = "public/Prescription.html"; 
 
-export const WELCOME_MESSAGE = `Hello!👋 Welcome to ${AI_NAME}!
+export const WELCOME_MESSAGE = ``Hello! 👋 Welcome to ${AI_NAME}!
+
 I'm your intelligent CDSS assistant. Here's what I can help you with:
 
-**🔍 Patient Management:**
-- Search existing patient records and prescription history
-- Track patient allergies and medical history
-- Quick access to previous medications
-- Upload patient EHRs to ensure prescriptions are tailored to their medical history.
+| 🔍 Patient Management | 💊 Prescription Creation | 📱 Patient Communication |
+|----------------------|--------------------------|---------------------------|
+| - Search existing patient records<br>- Track patient allergies and medical history<br>- Quick access to previous medications<br>- Upload patient EHRs for tailored prescriptions | - Evidence-based medication suggestions<br>- Automatic allergy conflict checking<br>- Professional markdown-formatted prescriptions<br>- Instant database storage for future reference | - Send prescription summaries via SMS (160 characters)<br>- Include prescription ID for easy reference |
 
-**💊 Prescription Creation:**
-- Evidence-based medication suggestions
-- Automatic allergy conflict checking
-- Professional markdown-formatted prescriptions
-- Instant database storage for future reference
+**🔄 Quick Actions:** Type patient name to check their records • Describe symptoms to get medication recommendations • Say "new patient" to start a fresh prescription.
 
-**📱 Patient Communication:**
-- Send prescription summaries via SMS (160 characters)
-- Include prescription ID for easy reference
-
-**🔄 Quick Actions:**
-- Type patient name to check their records
-- Describe symptoms to get medication recommendations
-- Say "new patient" to start a fresh prescription
-
-How can I assist you today?"`;
+How can I assist you today?``;
 
 export const CLEAR_CHAT_TEXT = "New";
 
