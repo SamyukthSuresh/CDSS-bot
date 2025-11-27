@@ -85,9 +85,10 @@ Medical record for: ${item.metadata.patientName}
       return {
         success: true,
         upsertedCount: texts.length,
+        vectorIds: vectors.map(v => v.id), // Return the IDs!
         indexName,
         namespace: namespace || 'default',
-        message: `Successfully stored ${texts.length} prescription(s) for patients in the vector database.`,
+        message: `Successfully stored ${texts.length} prescription(s). Vector IDs: ${vectors.map(v => v.id).join(', ')}`,
       };
     } catch (err) {
       console.error("Pinecone upsert failed:", err);
