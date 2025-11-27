@@ -33,21 +33,40 @@ export const writeVectorDatabase = tool({
     
     try {
       const embeddingPromises = texts.map(async (item) => {
+        // Enhance text with patient name for better searchability
+        const enhancedText = `
+PRESCRIPTION FOR PATIENT ${item.metadata.patientName.toUpperCase()}
+Patient Name: ${item.metadata.patientName}
+Prescription ID: ${item.metadata.prescriptionId}
+Date: ${item.metadata.date}
+Doctor: ${item.metadata.doctor}
+${item.metadata.symptoms ? `Symptoms: ${item.metadata.symptoms}` : ''}
+Allergies: ${item.metadata.allergies.join(', ')}
+
+${item.text}
+
+This prescription belongs to patient: ${item.metadata.patientName}
+Medical record for: ${item.metadata.patientName}
+        `.trim();
+        
         const response = await openai.embeddings.create({
           model: "text-embedding-3-small",
-          input: item.text,
+          input: enhancedText,
           dimensions: 1024,
         });
         
         return {
           id: item.id,
           values: response.data[0].embedding,
-          metadata: { ...item.metadata, text: item.text },
+          metadata: { 
+            ...item.metadata, 
+            text: enhancedText  // Store the enhanced text in metadata
+          },
         };
       });
-
+      
       const vectors = await Promise.all(embeddingPromises);
-
+      
       const resp = namespace 
         ? await index.namespace(namespace).upsert(vectors)
         : await index.upsert(vectors);
@@ -57,7 +76,7 @@ export const writeVectorDatabase = tool({
         upsertedCount: texts.length,
         indexName,
         namespace: namespace || 'default',
-        message: `Successfully stored ${texts.length} document(s) in the vector database.`,
+        message: `Successfully stored ${texts.length} prescription(s) for patients in the vector database.`,
       };
     } catch (err) {
       console.error("Pinecone upsert failed:", err);
